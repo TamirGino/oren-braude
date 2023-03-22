@@ -1,0 +1,28 @@
+body {
+  /* background-color: #89D382; */
+  background: #cfffe9;
+  background: url(UI/1.png);
+  background-repeat: no-repeat;
+  background-size:cover;                     
+  background-position:top;
+  background-repeat: no-repeat;
+  /* background-image: linear-gradient(45deg, #85ffce 0%, #b3ff7d 50%, #9eef9e 100%); */
+
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+/* body {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e0e4ee;
+  background: url(/src/UI/restaurant.png);
+} */

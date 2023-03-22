@@ -1,0 +1,22 @@
+.header{
+    position: relative;
+}
+
+.content{
+    position: absolute;
+    right:200px;
+    top:400px;
+}
+
+
+.img{
+    position: absolute;
+    right:90px;
+    top: 50px;
+    width: 500px;
+}
+.paragraph{
+    position:absolute;
+    right:150px;
+}
+
