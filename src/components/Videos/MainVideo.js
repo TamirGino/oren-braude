@@ -13,6 +13,7 @@ export default function MainVideo(props) {
   const handleClose = () => {
     props.onClose();
   };
+  
 
   const opts = {
     height: '500',
