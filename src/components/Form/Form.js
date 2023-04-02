@@ -10,18 +10,36 @@ import StepTwo from '../Survey/StepTwo';
 import StepThree from '../Survey/StepThree';
 import StepFour from '../Survey/StepFour';
 import Output from '../Output/Output';
-import { Box, Divider, IconButton, Stack, Step, StepLabel, Stepper, Typography } from '@mui/material';
+import { Box, Divider, IconButton, Stack, Step, StepLabel, Stepper, Typography, createMuiTheme, useMediaQuery } from '@mui/material';
 import CancelPresentationRoundedIcon from '@mui/icons-material/CancelPresentationRounded';
+import CloseIcon from '@mui/icons-material/Close';
 
 // import styles from '../UI/Style.module.css';
 import styles from '../../UI/Style.module.css';
-
-
+import {  useTheme } from '@material-ui/core';
 
 const steps = ['שלב אחד', 'שלב שתיים', 'שלב שלוש', 'שלב ארבע'];
 
 export default function Form(props) {
-  
+  // const theme = useTheme();
+  // const theme = createMuiTheme({
+  //   breakpoints: {
+  //     values: {
+  //       xs: 300,
+  //       sm: 350,
+  //       md: 400,
+  //       lg: 660,
+  //       xl: 1280,
+  //     },
+  //   },
+  // });
+  // const isXsmallScreen = useMediaQuery(theme.breakpoints.up('xs'));
+  // const isSmallScreen = useMediaQuery(theme.breakpoints.up('sm'));
+  // const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
+  // const isLargeScreen = useMediaQuery(theme.breakpoints.up('lg'));
+  // const isXlargeScreen = useMediaQuery(theme.breakpoints.up('xl'));
+
+  // const fullScreen = useMediaQuery('(max-width:500px)');
 
   const initialValue = [{ id: 0, value: 0 }];
 
@@ -99,82 +117,117 @@ export default function Form(props) {
     console.log(val);
     setUserEmail(val);
   };
-  //maxWidth={isSmallScreen ? '100%' : 'md'}
-  return (
+  //maxWidth={isSmallScreen ? '100%' : 'md'} /* margin-top: 10px; margin-right: 10px; */
+  //            {activeStep > 0 ? (activeStep === steps.length ? '' : 'הבא') : ''}
+  // marginRight: isSmallScreen ?? '2rem' isMediumScreen ? '100%' : '100%' isXsmallScreen
 
-      <Dialog className={styles.dialog} open={props.open} onClose={handleClose} scroll={'paper'} aria-labelledby='scroll-dialog-title' aria-describedby='scroll-dialog-description'>
-        <DialogTitle>
-          <Stack direction='row' spacing={2} alignItems='center'>
-            <IconButton
-              aria-label='close'
-              onClick={handleClose}
+  return (
+    <Dialog
+      open={props.open}
+      onClose={handleClose}
+      scroll={'paper'}
+      aria-labelledby='scroll-dialog-title'
+      aria-describedby='scroll-dialog-description'
+      fullScreen={props.fullScreen}
+      PaperProps={{
+        style: {
+          margin: 0,
+          maxWidth: 'none',
+          maxHeight: 'none',
+        },
+      }}
+    >
+      <DialogTitle>
+        <Stack direction='row' spacing={2} alignItems='center'>
+          {/* <IconButton
+            aria-label='close'
+            onClick={handleClose}
+            sx={{
+              position: 'absolute',
+              top: -10,
+              right: -10,
+              width: '50px',
+              height: '50px',
+              color: '#4B4F52',
+            }}
+          >
+            <CancelPresentationRoundedIcon
               sx={{
-                // position: 'absolute',
-                top: '-20px',
-                right: '-30px',
-                width: '50px',
-                height: '50px',
-                color: '#4B4F52',
+                '&:hover': {
+                  color: '#B31232C4',
+                },
               }}
-            >
-              <CancelPresentationRoundedIcon
-                sx={{
-                  '&:hover': {
-                    color: '#B31232C4',
-                  },
-                }}
-              />
-            </IconButton>
-              <Stepper activeStep={activeStep} >
-                {steps.map((label, index) => {
-                  const stepProps = {};
-                  const labelProps = {};
-                  return (
-                    <Step key={label} {...stepProps}>
-                      <StepLabel {...labelProps}>{label}</StepLabel>
-                    </Step>
-                  );
-                })}
-              </Stepper>
-          </Stack>
-        </DialogTitle>
-        <Divider />
-        <DialogContent>
-          <DialogContentText id='scroll-dialog-description' tabIndex={-1}>
-            {activeStep === steps.length ? (
-              <React.Fragment>
-                <Typography sx={{ mt: 2, mb: 1 }}>{scoreCount.reduce((prev, obj) => prev + obj.value, 0)} </Typography>
-                <Output sum={scoreCount.reduce((prev, obj) => prev + obj.value, 0)} userEmail={userEmail}></Output>
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                {activeStep === 0 ? (
-                  <StepOne handleForm={handleForm} handleEmail={handleEmail} />
-                ) : activeStep === 1 ? (
-                  <StepTwo updateCount={updateCount} />
-                ) : activeStep === 2 ? (
-                  <StepThree updateCount={updateCount} />
-                ) : (
-                  <StepFour updateCount={updateCount} />
-                )}
-              </React.Fragment>
-            )}
-          </DialogContentText>
-        </DialogContent>
-        {/* <Divider></Divider> */}
-        {activeStep > 0 ?? <Divider></Divider>}
-        <DialogActions>
-          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 0 }}>
-            <Box sx={{ flex: '1 1 auto' }} />
-            <Button disabled={btnDisabled} onClick={handleNext}>
-              {activeStep > 0 ? (activeStep === steps.length ? '' : 'הבא') : ''}
-            </Button>
-            {/* <Button variant='text' color='error' sx={{ fontSize: '20px', justifyContent: 'center' }} onClick={handleClose}>
+            />
+          </IconButton> */}
+
+          <IconButton
+            aria-label='close'
+            onClick={handleClose}
+            sx={{
+              position: 'absolute',
+              right: -5,
+              top: -5,
+              color: (theme) => theme.palette.grey[600],
+            }}
+          >
+            <CloseIcon
+              sx={{
+                '&:hover': {
+                  color: '#B31232C4',
+                },
+              }}
+            />
+          </IconButton>
+
+          <Stepper activeStep={activeStep}>
+            {steps.map((label, index) => {
+              const stepProps = {};
+              const labelProps = {};
+              return (
+                <Step key={label} {...stepProps}>
+                  <StepLabel {...labelProps}>{label}</StepLabel>
+                </Step>
+              );
+            })}
+          </Stepper>
+        </Stack>
+      </DialogTitle>
+      <Divider />
+      <DialogContent>
+        <DialogContentText id='scroll-dialog-description' tabIndex={-1}>
+          {activeStep === steps.length ? (
+            <React.Fragment>
+              <Typography sx={{ mt: 2, mb: 1 }}>{scoreCount.reduce((prev, obj) => prev + obj.value, 0)} </Typography>
+              <Output fullScreen={props.fullScreen} sum={scoreCount.reduce((prev, obj) => prev + obj.value, 0)} userEmail={userEmail}></Output>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              {activeStep === 0 ? (
+                <StepOne handleForm={handleForm} handleEmail={handleEmail} />
+              ) : activeStep === 1 ? (
+                <StepTwo updateCount={updateCount} />
+              ) : activeStep === 2 ? (
+                <StepThree updateCount={updateCount} />
+              ) : (
+                <StepFour updateCount={updateCount} />
+              )}
+            </React.Fragment>
+          )}
+        </DialogContentText>
+      </DialogContent>
+      {/* <Divider></Divider> */}
+      {activeStep > 0 ?? <Divider></Divider>}
+      <DialogActions>
+        <Box sx={{ display: 'flex', flexDirection: 'row', pt: 0 }}>
+          <Box sx={{ flex: '1 1 auto' }} />
+          <Button disabled={btnDisabled} onClick={handleNext}>
+            {activeStep > 0 ? (activeStep === steps.length ? '' : 'הבא') : ''}
+          </Button>
+          {/* <Button variant='text' color='error' sx={{ fontSize: '20px', justifyContent: 'center' }} onClick={handleClose}>
               {activeStep === steps.length ? 'סיים' : 'ביטול'}
             </Button> */}
-          </Box>
-        </DialogActions>
-      </Dialog>
-
+        </Box>
+      </DialogActions>
+    </Dialog>
   );
 }

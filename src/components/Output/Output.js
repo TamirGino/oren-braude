@@ -1,9 +1,12 @@
 import * as React from 'react';
-import { Grid } from '@mui/material';
+import { Box, Button, Fab, Grid, Grow, IconButton, Typography } from '@mui/material';
 import ReactSpeedometer from 'react-d3-speedometer';
 import { db } from '../../config/firebase';
 import { addDoc, collection, doc, getDoc, updateDoc, getDocs, query, setDoc, where } from 'firebase/firestore';
 import {checkEmailExists} from '../Survey/StepOne'
+import TipsAndUpdatesOutlinedIcon from '@mui/icons-material/TipsAndUpdatesOutlined';
+import MainVideo from '../Videos/MainVideo'
+
 
 
 
@@ -21,8 +24,10 @@ export default function Output(props) {
   //     return -1;
   //   }
   // };
+const [Delay, setDelay] = React.useState(false);
+const [videoOpen, setVideoOpen] = React.useState(false);
+const [comment, setComment] = React.useState('');
 
-  //console.log((props.sum/9)*200)
 const updateUserScore = async (email, score) => {
   const usersRef = collection(db, 'users');
   const q = query(usersRef, where('email', '==', email));
@@ -49,56 +54,87 @@ const updateUserScore = async (email, score) => {
 // };
 
   React.useEffect(() => {
-      //console.log(props.userEmail);
-      //const score = checkEmailExists(props.userEmail);
-      //console.log(score);
-      //score.then((data) => {
-        //console.log('Received data:', data);
-      //});
   updateUserScore(props.userEmail, props.sum);
+  const timer = setTimeout(() => {
+    setDelay(true);
+    return () => clearTimeout(timer);
+  }, 3500);
+
+  if (props.sum <= 15) {
+    setComment('הגמישות המטבולית שלך נמוכה, צפה בסרטון על מנת לרדת במשקל ולהיות ברמות אנרגיה גבוהות');
+  } else if (props.sum <= 30) {
+    setComment('הגמישות המטבולית שלך בינונית, צפה בסרטון על מנת לרדת במשקל ולהיות ברמות אנרגיה גבוהות');
+  } else {
+    setComment('הגמישות המטבולית שלך טובה! צפה בסרטון על מנת לקחת אותה לשלב הבא');
+  }
   }, []);
 
+
+  const handelVideoOpen = () => {
+    setVideoOpen(true);
+  };
+  const handleVideoClose = () => {
+    setVideoOpen(false);
+  };
+
   return (
-    <Grid item container justifyContent='center'>
+    // <Grid item container justifyContent='center'>
+    <Box container display='flex' flexDirection='column' sx={{ alignItems: 'center' }}>
       <ReactSpeedometer
-        width={500}
-        needleHeightRatio={0.7}
-        value={(props.sum / 9) * 200}
+        width={props.fullScreen ? 350 : 500}
+        needleHeightRatio={props.fullScreen ? 0.5 : 0.7}
+        maxValue='5'
+        value={props.sum / 9}
         currentValueText=' מידת הגמישות המטבולית שלך'
         customSegmentLabels={[
           {
-            text: 'Very Bad',
+            text: 'רמה נמוכה מאוד',
             // position: 'INSIDE',
-            color: '#555',
+            // color: '#555',
+            fontSize: props.fullScreen ? 12 : 15,
           },
           {
-            text: 'Bad',
+            text: 'רמה נמוכה',
             // position: 'INSIDE',
-            color: '#555',
+            // color: '#555',
           },
           {
-            text: 'Ok',
+            text: 'ממוצע',
             // position: 'INSIDE',
-            color: '#555',
-            fontSize: '19px',
+            // color: '#555',
+            fontSize: '20px',
           },
           {
-            text: 'Good',
+            text: 'רמה גבוהה',
             // position: 'INSIDE',
-            color: '#555',
+            // color: '#555',
           },
           {
-            text: 'Very Good',
+            text: 'רמה גבוהה מאוד',
             // position: 'INSIDE',
-            color: '#555',
+            // color: '#555',
+            fontSize: props.fullScreen ? 12 : 15,
           },
         ]}
         ringWidth={47}
         needleTransitionDuration={3333}
-        // needleTransition='easeLinear'
+        // needleTransition='easePolyOut'
         needleColor={'#90f2ff'}
         textColor={'#0d446c'}
       />
-    </Grid>
+      <Grow in={Delay} timeout={2000}>
+        {/* <Button variant='outlined'>המשך לטיפים</Button> */}
+        {/* <IconButton fontSize='large'>
+          <TipsAndUpdatesOutlinedIcon />
+        </IconButton> */}
+        <Fab onClick={handelVideoOpen} size='medium' variant='extended' color='primary' sx={{ boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.8)', width: '50%' }}>
+          <Typography variant='body1' sx={{ display: 'inline-block' }}>
+            המשך לטיפים
+          </Typography>
+          <TipsAndUpdatesOutlinedIcon sx={{ mr: 2 }} />
+        </Fab>
+      </Grow>
+      <MainVideo title={comment} fullScreen={props.fullScreen} open={videoOpen} onClose={handleVideoClose}></MainVideo>
+    </Box>
   );
 }
