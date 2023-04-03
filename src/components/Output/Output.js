@@ -28,6 +28,24 @@ const [Delay, setDelay] = React.useState(false);
 const [videoOpen, setVideoOpen] = React.useState(false);
 const [comment, setComment] = React.useState('');
 
+// const updateUserScore = async (email, score) => {
+//   const usersRef = collection(db, 'users');
+//   const q = query(usersRef, where('email', '==', email));
+
+//   try {
+//     const querySnapshot = await getDocs(q);
+//     if (querySnapshot.empty) {
+//       console.error('No matching documents');
+//       return;
+//     }
+//     // console.log(querySnapshot.docs[0]);
+//     const userDoc = querySnapshot.docs[0];
+//     await updateDoc(doc(usersRef, userDoc.id), { score });
+//     console.log(`Score updated for user ${email}`);
+//   } catch (error) {
+//     console.error('Error updating user score:', error);
+//   }
+// };
 const updateUserScore = async (email, score) => {
   const usersRef = collection(db, 'users');
   const q = query(usersRef, where('email', '==', email));
@@ -39,12 +57,19 @@ const updateUserScore = async (email, score) => {
       return;
     }
     const userDoc = querySnapshot.docs[0];
+    const userData = userDoc.data();
+    const currentScore = userData.score;
+    if (currentScore !== -1) {
+      console.log(`Score for user ${email} is -1. Not updating score.`);
+      return;
+    }
     await updateDoc(doc(usersRef, userDoc.id), { score });
     console.log(`Score updated for user ${email}`);
   } catch (error) {
     console.error('Error updating user score:', error);
   }
 };
+
     //await setDoc(userRef, { score }, { merge: false });
 //     await updateDoc(userRef, { score });
 //     console.log(`Score updated for user ${email}`);
@@ -62,7 +87,7 @@ const updateUserScore = async (email, score) => {
 
   if (props.sum <= 15) {
     setComment('הגמישות המטבולית שלך נמוכה, צפה בסרטון על מנת לרדת במשקל ולהיות ברמות אנרגיה גבוהות');
-  } else if (props.sum <= 30) {
+  } else if (props.sum <= 27) {
     setComment('הגמישות המטבולית שלך בינונית, צפה בסרטון על מנת לרדת במשקל ולהיות ברמות אנרגיה גבוהות');
   } else {
     setComment('הגמישות המטבולית שלך טובה! צפה בסרטון על מנת לקחת אותה לשלב הבא');

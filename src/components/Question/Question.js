@@ -24,15 +24,15 @@ const customIcons = {
     label: 'Very Dissatisfied',
   },
   2: {
-    icon: <LooksTwoOutlinedIcon color='error' />,
+    icon: <LooksTwoOutlinedIcon color='warning' />,
     label: 'Dissatisfied',
   },
   3: {
-    icon: <Looks3OutlinedIcon color='warning' />,
+    icon: <Looks3OutlinedIcon sx={{ color: '#fbc02d' }} />,
     label: 'Neutral',
   },
   4: {
-    icon: <Looks4OutlinedIcon color='success' />,
+    icon: <Looks4OutlinedIcon sx={{ color: '#64dd17' }} />, 
     label: 'Satisfied',
   },
   5: {

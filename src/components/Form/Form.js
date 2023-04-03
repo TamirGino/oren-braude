@@ -178,18 +178,19 @@ export default function Form(props) {
               }}
             />
           </IconButton>
-
-          <Stepper activeStep={activeStep}>
-            {steps.map((label, index) => {
-              const stepProps = {};
-              const labelProps = {};
-              return (
-                <Step key={label} {...stepProps}>
-                  <StepLabel {...labelProps}>{label}</StepLabel>
-                </Step>
-              );
-            })}
-          </Stepper>
+          {/* <Box sx={{ width: '80%', mt: 10, mr: 20 }}> */}
+            <Stepper activeStep={activeStep} sx={{ height: 40 }}>
+              {steps.map((label, index) => {
+                const stepProps = {};
+                const labelProps = {};
+                return (
+                  <Step key={label} {...stepProps}>
+                    <StepLabel {...labelProps}>{label}</StepLabel>
+                  </Step>
+                );
+              })}
+            </Stepper>
+          {/* </Box> */}
         </Stack>
       </DialogTitle>
       <Divider />

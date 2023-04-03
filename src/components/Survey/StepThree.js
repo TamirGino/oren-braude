@@ -5,11 +5,11 @@ import { db } from '../../config/firebase';
 import { getDocs, collection } from 'firebase/firestore';
 
 
-export default function StepOne(props) {
+export default function StepThree(props) {
   const [questionsList, setQuestionsList] = React.useState([]);
   const questionsColectionRef = collection(db, 'sectionTwo');
-  const values = React.useRef({}); 
-   
+  const values = React.useRef({});
+
   React.useEffect(() => {
     const getQuestions = async () => {
       try {
@@ -29,7 +29,6 @@ export default function StepOne(props) {
 
     getQuestions();
   }, []);
-
 
   const handleChange = (id, value) => {
     values.current[id] = value;

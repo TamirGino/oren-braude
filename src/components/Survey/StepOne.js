@@ -51,7 +51,10 @@ export default function StepOneOne(props) {
     const emailExists = await checkEmailExists(values.email);
     if (emailExists !== -1) {
       //alert('Email already exists in database!');
-      props.handleForm(emailExists);
+      // props.handleForm(emailExists);
+      setIsLoading(true);
+      // console.log('If');
+      callSetTimeout(emailExists);
     } else {
       try {
         const newUser = doc(collection(db, 'users'));
@@ -60,15 +63,25 @@ export default function StepOneOne(props) {
         console.log(err);
       }
       setIsLoading(true);
-      const timer = setTimeout(() => {
-        setIsLoading(false);
-        console.log('This will run after 2 second!');
-        console.log(JSON.stringify(values, 'null', 4));
-        props.handleForm(emailExists);
-        return () => clearTimeout(timer);
-      }, 2000);
+      // console.log("Else")
+      callSetTimeout(emailExists);
+      // const timer = setTimeout(() => {
+      //   setIsLoading(false);
+      //   console.log('This will run after 2 second!');
+      //   props.handleForm(emailExists);
+      //   return () => clearTimeout(timer);
+      // }, 2000);
     }
     props.handleEmail(values.email);
+  };
+
+  const callSetTimeout = (emailExists) => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+      console.log('This will run after 2 second!');
+      props.handleForm(emailExists);
+    }, 2000);
+    return () => clearTimeout(timer);
   };
 
   // 👇 Returned JSX

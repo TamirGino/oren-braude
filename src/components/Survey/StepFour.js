@@ -5,31 +5,30 @@ import { db } from '../../config/firebase';
 import { getDocs, collection } from 'firebase/firestore';
 
 
-export default function StepOne(props) {
+export default function StepFour(props) {
   const [questionsList, setQuestionsList] = React.useState([]);
   const questionsColectionRef = collection(db, 'sectionTwo');
-const values = React.useRef({});
+  const values = React.useRef({});
 
-React.useEffect(() => {
-  const getQuestions = async () => {
-    try {
-      const data = await getDocs(questionsColectionRef);
-      const filteredData = data.docs.map((doc) => {
-        values.current[doc.id] = 1;
-        return { ...doc.data(), id: doc.id };
-      });
+  React.useEffect(() => {
+    const getQuestions = async () => {
+      try {
+        const data = await getDocs(questionsColectionRef);
+        const filteredData = data.docs.map((doc) => {
+          values.current[doc.id] = 1;
+          return { ...doc.data(), id: doc.id };
+        });
 
-      console.log(values.current);
+        console.log(values.current);
 
-      setQuestionsList(filteredData);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+        setQuestionsList(filteredData);
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
-  getQuestions();
-}, []);
-
+    getQuestions();
+  }, []);
 
   const handleChange = (id, value) => {
     values.current[id] = value;
