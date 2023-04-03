@@ -53,7 +53,7 @@ function App() {
         <Fab
         sx={{
           top: 300,
-          left: -200,
+          left: -50,
           border: '3px solid aqua',
           backgroundColor: '#cfffe9',
           height: 80,
@@ -79,7 +79,7 @@ function App() {
         <Fab
         sx={{
           top:300,
-          right: 300,
+          right: 150,
           border: '3px solid aqua',
           backgroundColor: '#cfffe9',
           height: 80,
