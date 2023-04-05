@@ -47,29 +47,29 @@ function App() {
         <Typography sx={{fontFamily:'Arial',fontStyle: 'italic'}} mt={48} variant="h6" className={styles.paragraph}>ובסוף הסקר תוכלו לדעת כמה אתם גמישים</Typography>
         <Typography sx={{fontFamily:'Arial',fontStyle: 'italic'}} mt={51} variant="h6" className={styles.paragraph}>(; ויש גם סרטון הסבר</Typography> */}
       <Form fullScreen={fullScreen} open={formOpen} onClose={handleFormClose} handleUserExist={handleUserExist} exist={isUserExist}></Form>
-      <MainVideo title={'גמישות מטבולית'} fullScreen={fullScreen} open={videoOpen} onClose={handleVideoClose}></MainVideo>
+      <MainVideo videoId={'z027uv2AeM8'} title={'גמישות מטבולית - מה זה אומר ??'} fullScreen={fullScreen} open={videoOpen} onClose={handleVideoClose}></MainVideo>
       {/* <Stack className={styles.content} direction='row' spacing={12}> */}
       <Tooltip TransitionComponent={Zoom} title='נגן סרטון' onClick={handelVideoOpen} arrow>
         <Fab
-        sx={{
-          top: 300,
-          left: -50,
-          border: '3px solid aqua',
-          backgroundColor: '#cfffe9',
-          height: 80,
-          width: 80,
-          boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.8)',
-          '&:hover': {
-            backgroundColor: '#85E4B9',
-          },
-        }}
-        >
-          <IconButton
           sx={{
+            top: 300,
+            left: -50,
+            border: '3px solid aqua',
+            backgroundColor: '#cfffe9',
+            height: 80,
+            width: 80,
+            boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.8)',
             '&:hover': {
               backgroundColor: '#85E4B9',
             },
           }}
+        >
+          <IconButton
+            sx={{
+              '&:hover': {
+                backgroundColor: '#85E4B9',
+              },
+            }}
           >
             <OndemandVideoOutlinedIcon />
           </IconButton>
@@ -77,25 +77,25 @@ function App() {
       </Tooltip>
       <Tooltip TransitionComponent={Zoom} title='ענה על השאלון' onClick={handelFormOpen} arrow>
         <Fab
-        sx={{
-          top:300,
-          right: 150,
-          border: '3px solid aqua',
-          backgroundColor: '#cfffe9',
-          height: 80,
-          width: 80,
-          boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.8)',
-          '&:hover': {
-            backgroundColor: '#85E4B9',
-          },
-        }}
-        >
-          <IconButton
           sx={{
+            top: 300,
+            right: 150,
+            border: '3px solid aqua',
+            backgroundColor: '#cfffe9',
+            height: 80,
+            width: 80,
+            boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.8)',
             '&:hover': {
               backgroundColor: '#85E4B9',
             },
           }}
+        >
+          <IconButton
+            sx={{
+              '&:hover': {
+                backgroundColor: '#85E4B9',
+              },
+            }}
           >
             <ContentPasteOutlinedIcon />
           </IconButton>

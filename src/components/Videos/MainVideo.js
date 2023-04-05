@@ -36,7 +36,7 @@ export default function MainVideo(props) {
   return (
     <Container maxWidth={isSmallScreen ? '100%' : 'md'}>
       <Dialog open={props.open} fullScreen={props.fullScreen} maxWidth={true} onClose={handleClose} aria-labelledby='alert-dialog-title' aria-describedby='alert-dialog-description'>
-        <DialogTitle sx={{ textAlign: 'center', fontStyle: 'italic' }} id='alert-dialog-title'>
+        <DialogTitle sx={{ textAlign: 'center', fontStyle: 'italic', fontSize: '20px', fontFamily: 'cursive' }} id='alert-dialog-title'>
           {props.title}
           <IconButton
             aria-label='close'
@@ -59,7 +59,7 @@ export default function MainVideo(props) {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id='alert-dialog-description'>
-            <YouTube videoId={'IUN664s7N-c'} opts={props.fullScreen ? smallScreen : normal} />
+            <YouTube videoId={props.videoId} opts={props.fullScreen ? smallScreen : normal} />
           </DialogContentText>
         </DialogContent>
       </Dialog>
