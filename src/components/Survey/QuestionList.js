@@ -4,13 +4,16 @@ import Question from '../Question/Question';
 import { db } from '../../config/firebase';
 import { getDocs, collection } from 'firebase/firestore';
 
-export default function StepThree(props) {
+
+export default function QuestionList(props) {
   const [questionsList, setQuestionsList] = React.useState([]);
-  const questionsColectionRef = collection(db, 'dependence on carbohydrates');
+  const questionsColectionRef = collection(db, props.section);
   const values = React.useRef({});
 
   React.useEffect(() => {
+    
     const getQuestions = async () => {
+      console.log(props.section);
       try {
         const data = await getDocs(questionsColectionRef);
         const filteredData = data.docs.map((doc) => {
@@ -32,6 +35,7 @@ export default function StepThree(props) {
   const handleChange = (id, value) => {
     values.current[id] = value;
     const count = questionsList.reduce((prev, q) => prev + values.current[q.id], 0);
+    console.log(count);
     props.updateCount(count);
   };
 

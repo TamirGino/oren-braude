@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Grid, Box, Typography, Divider } from '@mui/material';
+import { Grid, Box, Typography, Divider, CircularProgress } from '@mui/material';
 import { useForm, FormProvider } from 'react-hook-form';
 import { object, string } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -47,31 +47,19 @@ export default function StepOneOne(props) {
 
   // 👇 Form Handler
   const onSubmitHandler = async (values) => {
+    setIsLoading(true);
     console.log(values.email);
     const emailExists = await checkEmailExists(values.email);
-    if (emailExists !== -1) {
-      //alert('Email already exists in database!');
-      // props.handleForm(emailExists);
-      setIsLoading(true);
-      // console.log('If');
-      callSetTimeout(emailExists);
-    } else {
+    if (emailExists === -1) {
+      //Email doesn't exist in database!;
       try {
         const newUser = doc(collection(db, 'users'));
         await setDoc(newUser, { id: newUser.id, email: values.email, first_name: values.name, last_name: values.Lname, open: true, score: -1 });
       } catch (err) {
         console.log(err);
       }
-      setIsLoading(true);
-      // console.log("Else")
-      callSetTimeout(emailExists);
-      // const timer = setTimeout(() => {
-      //   setIsLoading(false);
-      //   console.log('This will run after 2 second!');
-      //   props.handleForm(emailExists);
-      //   return () => clearTimeout(timer);
-      // }, 2000);
     }
+    callSetTimeout(emailExists);
     props.handleEmail(values.email);
   };
 
@@ -95,7 +83,7 @@ export default function StepOneOne(props) {
             <FormInput label='כתובת מייל' type='email' name='email' focused required />
             <Divider sx={{ borderBottomWidth: 2 }} />{' '}
             <LoadingButton
-              variant='outlined'
+              variant='text'
               type='submit'
               endIcon={
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -106,12 +94,14 @@ export default function StepOneOne(props) {
                 </Box>
               }
               loading={isLoading}
+              loadingIndicator={<CircularProgress color='primary' size={40} />}
               sx={{
                 fontSize: '15px',
                 py: '0.6rem',
-                mt: 2,
-                width: '45%',
+                mt: 4,
+                width: '40%',
                 marginInline: 'auto',
+                // borderRadius:'15px'
               }}
             ></LoadingButton>
           </Box>

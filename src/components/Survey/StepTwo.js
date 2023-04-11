@@ -4,13 +4,13 @@ import Question from '../Question/Question';
 import { db } from '../../config/firebase';
 import { getDocs, collection } from 'firebase/firestore';
 
-
 export default function StepTwo(props) {
   const [questionsList, setQuestionsList] = React.useState([]);
-  const questionsColectionRef = collection(db, 'questions');
+  const questionsColectionRef = collection(db, 'fast');
   const values = React.useRef({});
 
   React.useEffect(() => {
+    const questionsColectionRef = collection(db, 'fast');
     const getQuestions = async () => {
       try {
         const data = await getDocs(questionsColectionRef);

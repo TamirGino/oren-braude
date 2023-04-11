@@ -4,9 +4,9 @@ import Question from '../Question/Question';
 import { db } from '../../config/firebase';
 import { getDocs, collection } from 'firebase/firestore';
 
-export default function StepThree(props) {
+export default function StepFive(props) {
   const [questionsList, setQuestionsList] = React.useState([]);
-  const questionsColectionRef = collection(db, 'dependence on carbohydrates');
+  const questionsColectionRef = collection(db, 'hunger and training');
   const values = React.useRef({});
 
   React.useEffect(() => {

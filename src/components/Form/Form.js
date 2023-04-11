@@ -6,48 +6,33 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import StepOne from '../Survey/StepOne';
-import StepTwo from '../Survey/StepTwo';
 import StepThree from '../Survey/StepThree';
 import StepFour from '../Survey/StepFour';
+import StepFive from '../Survey/StepFive';
+import StepTwo from '../Survey/StepTwo';
 import Output from '../Output/Output';
-import { Box, Divider, IconButton, Stack, Step, StepLabel, Stepper, Typography, createMuiTheme, useMediaQuery } from '@mui/material';
-import CancelPresentationRoundedIcon from '@mui/icons-material/CancelPresentationRounded';
+import { Box, Divider, IconButton, Stack, Step, StepLabel, Stepper, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
-// import styles from '../UI/Style.module.css';
-import styles from '../../UI/Style.module.css';
-import {  useTheme } from '@material-ui/core';
 
-const steps = ['שלב אחד', 'שלב שתיים', 'שלב שלוש', 'שלב ארבע'];
+const steps = ['רישום', 'צום', 'תלות בפחמימות', 'אנרגיה וריכוז', 'רעב ואימונים'];
 
 export default function Form(props) {
-  // const theme = useTheme();
-  // const theme = createMuiTheme({
-  //   breakpoints: {
-  //     values: {
-  //       xs: 300,
-  //       sm: 350,
-  //       md: 400,
-  //       lg: 660,
-  //       xl: 1280,
-  //     },
-  //   },
-  // });
-  // const isXsmallScreen = useMediaQuery(theme.breakpoints.up('xs'));
-  // const isSmallScreen = useMediaQuery(theme.breakpoints.up('sm'));
-  // const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
-  // const isLargeScreen = useMediaQuery(theme.breakpoints.up('lg'));
-  // const isXlargeScreen = useMediaQuery(theme.breakpoints.up('xl'));
-
-  // const fullScreen = useMediaQuery('(max-width:500px)');
+  
 
   const initialValue = [{ id: 0, value: 0 }];
 
   const initialArray = [
-    { id: 1, value: 3 },
-    { id: 2, value: 3 },
-    { id: 3, value: 3 },
+    { id: 1, value: 6 },
+    { id: 2, value: 6 },
+    { id: 3, value: 7 },
+    { id: 4, value: 5 },
   ];
+
+  
+  const numOfQuestions = initialArray.reduce((accumulator, currentValue) => {
+    return accumulator + currentValue.value;
+  }, 0);
 
   const [userEmail, setUserEmail] = React.useState('');
   const [btnDisabled, setBtnDisabled] = React.useState(true);
@@ -55,7 +40,9 @@ export default function Form(props) {
   const [tempArray, setTempArray] = React.useState([{ value: 0 }]);
   const [scoreCount, setScoreCount] = React.useState(initialValue);
 
+
   React.useEffect(() => {
+    console.log(props.exist[1]);
     console.log(props.open);
     if (props.exist[0]) {
       console.log('EXIST');
@@ -93,6 +80,7 @@ export default function Form(props) {
   };
 
   const updateCount = (count) => {
+    console.log(count);
     if (activeStep === 1) {
       scoreCount[0].value = count;
     }
@@ -101,6 +89,10 @@ export default function Form(props) {
     }
     if (activeStep === 3) {
       scoreCount[2].value = count;
+      console.log(scoreCount);
+    }
+    if (activeStep === 4) {
+      scoreCount[3].value = count;
       console.log(scoreCount);
     }
   };
@@ -117,9 +109,9 @@ export default function Form(props) {
     console.log(val);
     setUserEmail(val);
   };
-  //maxWidth={isSmallScreen ? '100%' : 'md'} /* margin-top: 10px; margin-right: 10px; */
-  //            {activeStep > 0 ? (activeStep === steps.length ? '' : 'הבא') : ''}
-  // marginRight: isSmallScreen ?? '2rem' isMediumScreen ? '100%' : '100%' isXsmallScreen
+
+
+  console.log('VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV');
 
   return (
     <Dialog
@@ -138,28 +130,7 @@ export default function Form(props) {
       }}
     >
       <DialogTitle>
-        <Stack direction='row' spacing={2} alignItems='center'>
-          {/* <IconButton
-            aria-label='close'
-            onClick={handleClose}
-            sx={{
-              position: 'absolute',
-              top: -10,
-              right: -10,
-              width: '50px',
-              height: '50px',
-              color: '#4B4F52',
-            }}
-          >
-            <CancelPresentationRoundedIcon
-              sx={{
-                '&:hover': {
-                  color: '#B31232C4',
-                },
-              }}
-            />
-          </IconButton> */}
-
+        <Stack direction='row' spacing={2} alignItems='center' sx={{ display: 'flex', justifyContent: 'center' }}>
           <IconButton
             aria-label='close'
             onClick={handleClose}
@@ -178,19 +149,17 @@ export default function Form(props) {
               }}
             />
           </IconButton>
-          {/* <Box sx={{ width: '80%', mt: 10, mr: 20 }}> */}
-            <Stepper activeStep={activeStep} sx={{ height: 40 }}>
-              {steps.map((label, index) => {
-                const stepProps = {};
-                const labelProps = {};
-                return (
-                  <Step key={label} {...stepProps}>
-                    <StepLabel {...labelProps}>{label}</StepLabel>
-                  </Step>
-                );
-              })}
-            </Stepper>
-          {/* </Box> */}
+          <Stepper activeStep={activeStep} sx={{ height: 90, '& .MuiStepConnector-root ': { width: '0px' } }} alternativeLabel>
+            {steps.map((label, index) => {
+              const stepProps = {};
+              const labelProps = {};
+              return (
+                <Step key={label} {...stepProps}>
+                  <StepLabel {...labelProps}>{label}</StepLabel>
+                </Step>
+              );
+            })}
+          </Stepper>
         </Stack>
       </DialogTitle>
       <Divider />
@@ -198,19 +167,21 @@ export default function Form(props) {
         <DialogContentText id='scroll-dialog-description' tabIndex={-1}>
           {activeStep === steps.length ? (
             <React.Fragment>
-              {/* <Typography sx={{ mt: 2, mb: 1 }}>{scoreCount.reduce((prev, obj) => prev + obj.value, 0)} </Typography> */}
-              <Output fullScreen={props.fullScreen} sum={scoreCount.reduce((prev, obj) => prev + obj.value, 0)} userEmail={userEmail}></Output>
+              <Typography sx={{ mt: 2, mb: 1 }}>{scoreCount.reduce((prev, obj) => prev + obj.value, 0)} </Typography>
+              <Output numOfQuestions={numOfQuestions} fullScreen={props.fullScreen} sum={scoreCount.reduce((prev, obj) => prev + obj.value, 0)} userEmail={userEmail} exist={props.exist}></Output>
             </React.Fragment>
           ) : (
             <React.Fragment>
               {activeStep === 0 ? (
                 <StepOne handleForm={handleForm} handleEmail={handleEmail} />
               ) : activeStep === 1 ? (
-                <StepTwo updateCount={updateCount} />
+                <StepTwo section={'sectionOne'} updateCount={updateCount} />
               ) : activeStep === 2 ? (
-                <StepThree updateCount={updateCount} />
+                <StepThree section={'sectionTwo'} updateCount={updateCount} />
+              ) : activeStep === 3 ? (
+                <StepFour section={'sectionThree'} updateCount={updateCount} />
               ) : (
-                <StepFour updateCount={updateCount} />
+                <StepFive section={'sectionFour'} updateCount={updateCount} />
               )}
             </React.Fragment>
           )}

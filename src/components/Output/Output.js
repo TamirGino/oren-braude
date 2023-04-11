@@ -6,29 +6,15 @@ import { addDoc, collection, doc, getDoc, updateDoc, getDocs, query, setDoc, whe
 import { checkEmailExists } from '../Survey/StepOne';
 import TipsAndUpdatesOutlinedIcon from '@mui/icons-material/TipsAndUpdatesOutlined';
 import MainVideo from '../Videos/MainVideo';
-import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
-import { makeStyles } from '@material-ui/core/styles';
 
-// const useStyles = makeStyles({
-//   label: {
-//     display: 'flex',
-//     flexDirection: 'column',
-//     alignItems: 'center',
-//   },
-//   icon: {
-//     fontSize: '24px',
-//   },
-//   text: {
-//     transform: 'rotate(-45deg)',
-//   },
-// });
+
+
 
 export default function Output(props) {
   const [Delay, setDelay] = React.useState(false);
   const [videoOpen, setVideoOpen] = React.useState(false);
   const [comment, setComment] = React.useState('');
 
-  // const classes = useStyles();
 
   const labels = [
     { text: 'רמה נמוכה מאוד', fontSize: props.fullScreen ? 12 : 15 },
@@ -52,7 +38,7 @@ export default function Output(props) {
       const userData = userDoc.data();
       const currentScore = userData.score;
       if (currentScore !== -1) {
-        console.log(`Score for user ${email} is -1. Not updating score.`);
+        console.log(`Score for user ${email} is not -1. Not updating score.`);
         return;
       }
       await updateDoc(doc(usersRef, userDoc.id), { score });
@@ -62,8 +48,18 @@ export default function Output(props) {
     }
   };
 
+  const calcScore = () => {
+    if (props.exist[0]){
+      return props.sum
+      // return Math.round((props.sum / (props.numOfQuestions * 5)) * 120);
+    }else{
+      return Math.round((props.sum / (props.numOfQuestions * 5)) * 100);
+    }
+  };
+
   React.useEffect(() => {
-    updateUserScore(props.userEmail, props.sum);
+    console.log(props.numOfQuestions, props.sum, props.exist[0]);
+    updateUserScore(props.userEmail, calcScore());
     const timer = setTimeout(() => {
       setDelay(true);
       return () => clearTimeout(timer);
@@ -85,14 +81,17 @@ export default function Output(props) {
     setVideoOpen(false);
   };
 
+  
+
+
   return (
     <Box container display='flex' flexDirection='column' sx={{ alignItems: 'center' }}>
       <ReactSpeedometer
         width={props.fullScreen ? 350 : 500}
         needleHeightRatio={props.fullScreen ? 0.5 : 0.7}
         maxValue='5'
-        value={props.sum / 9}
-        currentValueText=' מידת הגמישות המטבולית שלך'
+        value={calcScore()/20}
+        currentValueText={`מידת הגמישות המטבולית שלך היא: % ${calcScore()} `}
         customSegmentLabels={labels}
         ringWidth={47}
         needleTransitionDuration={3333}

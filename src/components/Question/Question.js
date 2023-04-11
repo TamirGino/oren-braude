@@ -50,25 +50,27 @@ export default function Question(props) {
 
   const handleChange = (event, value) => {
     props.onChange(event, value);
-    console.log(props.val)
+    console.log(value)
   };
 
   
 
   return (
     <div dir='rtl'>
-      <Typography fontSize={16} align='center'>
+      <Typography fontSize={18} align='center'>
         {props.question}
         {props.val}
       </Typography>
-      <StyledRating
-        name='highlight-selected-only'
-        defaultValue={1}
-        IconContainerComponent={IconContainer}
-        getLabelText={(value) => customIcons[value].label}
-        highlightSelectedOnly
-        onChange={handleChange}
-      />
+      <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '15px' }}>
+        <StyledRating
+          name='highlight-selected-only'
+          defaultValue={1}
+          IconContainerComponent={IconContainer}
+          getLabelText={(value) => customIcons[value].label}
+          highlightSelectedOnly
+          onChange={handleChange}
+        />
+      </div>
     </div>
   );
 }
