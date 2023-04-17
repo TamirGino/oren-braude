@@ -19,7 +19,7 @@ export default function MainVideo(props) {
 
   const normal = {
     height: '500',
-    width: '850',
+    width: '500',
     playerVars: {
       autoplay: 1,
     },
@@ -58,7 +58,7 @@ export default function MainVideo(props) {
           </IconButton>
         </DialogTitle>
         <DialogContent>
-          <DialogContentText id='alert-dialog-description'>
+          <DialogContentText id='alert-dialog-description' sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <YouTube videoId={props.videoId} opts={props.fullScreen ? smallScreen : normal} />
           </DialogContentText>
         </DialogContent>

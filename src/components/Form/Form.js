@@ -167,7 +167,7 @@ export default function Form(props) {
         <DialogContentText id='scroll-dialog-description' tabIndex={-1}>
           {activeStep === steps.length ? (
             <React.Fragment>
-              <Typography sx={{ mt: 2, mb: 1 }}>{scoreCount.reduce((prev, obj) => prev + obj.value, 0)} </Typography>
+              {/* <Typography sx={{ mt: 2, mb: 1 }}>{scoreCount.reduce((prev, obj) => prev + obj.value, 0)} </Typography> */}
               <Output numOfQuestions={numOfQuestions} fullScreen={props.fullScreen} sum={scoreCount.reduce((prev, obj) => prev + obj.value, 0)} userEmail={userEmail} exist={props.exist}></Output>
             </React.Fragment>
           ) : (

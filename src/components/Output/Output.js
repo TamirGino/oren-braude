@@ -6,22 +6,19 @@ import { addDoc, collection, doc, getDoc, updateDoc, getDocs, query, setDoc, whe
 import { checkEmailExists } from '../Survey/StepOne';
 import TipsAndUpdatesOutlinedIcon from '@mui/icons-material/TipsAndUpdatesOutlined';
 import MainVideo from '../Videos/MainVideo';
-
-
-
+import OndemandVideoOutlinedIcon from '@mui/icons-material/OndemandVideoOutlined';
 
 export default function Output(props) {
   const [Delay, setDelay] = React.useState(false);
   const [videoOpen, setVideoOpen] = React.useState(false);
   const [comment, setComment] = React.useState('');
 
-
   const labels = [
-    { text: 'רמה נמוכה מאוד', fontSize: props.fullScreen ? 12 : 15 },
-    { text: 'רמה נמוכה' },
-    { text: ' ממוצע', fontSize: 18 },
-    { text: 'רמה גבוהה' },
-    { text: 'רמה גבוהה מאוד', fontSize: props.fullScreen ? 12 : 15 },
+    { text: '😭', fontSize: 23 },
+    { text: '😔', fontSize: 23 },
+    { text: '😬', fontSize: 23 }, // 🫤
+    { text: '🙂', fontSize: 23 },
+    { text: '😁', fontSize: 23 },
   ];
 
   const updateUserScore = async (email, score) => {
@@ -49,10 +46,10 @@ export default function Output(props) {
   };
 
   const calcScore = () => {
-    if (props.exist[0]){
-      return props.sum
+    if (props.exist[0]) {
+      return props.sum;
       // return Math.round((props.sum / (props.numOfQuestions * 5)) * 120);
-    }else{
+    } else {
       return Math.round((props.sum / (props.numOfQuestions * 5)) * 100);
     }
   };
@@ -65,9 +62,9 @@ export default function Output(props) {
       return () => clearTimeout(timer);
     }, 3500);
 
-    if (props.sum <= 15) {
+    if (calcScore() <= 30) {
       setComment('הגמישות המטבולית שלך נמוכה, צפה בסרטון על מנת לרדת במשקל ולהיות ברמות אנרגיה גבוהות');
-    } else if (props.sum <= 27) {
+    } else if (calcScore() <= 70) {
       setComment('הגמישות המטבולית שלך בינונית, צפה בסרטון על מנת לרדת במשקל ולהיות ברמות אנרגיה גבוהות');
     } else {
       setComment('הגמישות המטבולית שלך טובה! צפה בסרטון על מנת לקחת אותה לשלב הבא');
@@ -81,22 +78,20 @@ export default function Output(props) {
     setVideoOpen(false);
   };
 
-  
-
-
   return (
     <Box container display='flex' flexDirection='column' sx={{ alignItems: 'center' }}>
       <ReactSpeedometer
         width={props.fullScreen ? 350 : 500}
         needleHeightRatio={props.fullScreen ? 0.5 : 0.7}
         maxValue='5'
-        value={calcScore()/20}
-        currentValueText={`מידת הגמישות המטבולית שלך היא: % ${calcScore()} `}
-        customSegmentLabels={labels}
+        value={calcScore() / 20}
+        currentValueText={`מידת הגמישות המטבולית שלך היא: ${calcScore()} `}
         ringWidth={47}
         needleTransitionDuration={3333}
         needleColor={'#90f2ff'}
         textColor={'#0d446c'}
+        customSegmentLabels={labels}
+        //segmentColors={['#bf616a', '#d08770', '#ebcb8b', '#a3be8c', '#b48ead']}
       />
       <Grow in={Delay} timeout={2000}>
         <Fab onClick={handelVideoOpen} size='medium' variant='extended' color='primary' sx={{ boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.8)', width: props.fullScreen ? '100%' : '50%' }}>
