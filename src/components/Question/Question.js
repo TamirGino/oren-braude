@@ -57,7 +57,7 @@ export default function Question(props) {
 
   return (
     <div dir='rtl'>
-      <Typography fontSize={18} align='center'>
+      <Typography fontSize={18} >
         {props.question}
         {props.val}
       </Typography>

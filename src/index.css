@@ -1,6 +1,6 @@
 body {
   /* background-color: #ffffff; */
-  background: url(UI/new.jpg);
+  /* background: url(UI/new.jpg); */
   background-repeat:no-repeat; 
   background-position: top; 
   overflow: hidden;
@@ -42,7 +42,7 @@ body::before {
 @media (max-width: 700px) {
   body { 
   position: relative;
-  background: url(UI/mobile.jpg);
+  /* background: url(UI/mobile.jpg); */
   background-repeat:repeat; 
   background-position: top; 
   overflow: hidden;

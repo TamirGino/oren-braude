@@ -63,9 +63,9 @@ export default function Output(props) {
     }, 3500);
 
     if (calcScore() <= 30) {
-      setComment('הגמישות המטבולית שלך נמוכה, צפה בסרטון על מנת לרדת במשקל ולהיות ברמות אנרגיה גבוהות');
+      setComment('הגמישות המטבולית שלך נמוכה, צפה בסרטון על מנת לרדת במשקל ולהגיע לרמות אנרגיה גבוהות');
     } else if (calcScore() <= 70) {
-      setComment('הגמישות המטבולית שלך בינונית, צפה בסרטון על מנת לרדת במשקל ולהיות ברמות אנרגיה גבוהות');
+      setComment('הגמישות המטבולית שלך בינונית, צפה בסרטון על מנת לרדת במשקל ולהגיע לרמות אנרגיה גבוהות');
     } else {
       setComment('הגמישות המטבולית שלך טובה! צפה בסרטון על מנת לקחת אותה לשלב הבא');
     }
@@ -85,16 +85,21 @@ export default function Output(props) {
         needleHeightRatio={props.fullScreen ? 0.5 : 0.7}
         maxValue='5'
         value={calcScore() / 20}
-        currentValueText={`מידת הגמישות המטבולית שלך היא: ${calcScore()} `}
+        // currentValueText={`מידת הגמישות המטבולית שלך היא: ${calcScore()} `}
         ringWidth={47}
         needleTransitionDuration={3333}
         needleColor={'#90f2ff'}
         textColor={'#0d446c'}
         customSegmentLabels={labels}
-        //segmentColors={['#bf616a', '#d08770', '#ebcb8b', '#a3be8c', '#b48ead']}
+        currentValueText={' '}
+        // currentValueText={<Typography variant='body1'>מידת הגמישות המטבולית שלך היא: {calcScore()}</Typography>}
+        //segmentColors={['#bf616a', '#d08770', '#ebcb8b', '#a3be8c', '#B48E8E']}
       />
+      <Typography sx={{ fontSize: 23, fontFamily: 'Roboto', color: '#022641', mt: -2 }} variant='h6'>
+        מידת הגמישות המטבולית שלך היא: <strong>{calcScore()}</strong>
+      </Typography>
       <Grow in={Delay} timeout={2000}>
-        <Fab onClick={handelVideoOpen} size='medium' variant='extended' color='primary' sx={{ boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.8)', width: props.fullScreen ? '100%' : '50%' }}>
+        <Fab onClick={handelVideoOpen} size='medium' variant='extended' color='primary' sx={{ boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.8)', width: props.fullScreen ? '100%' : '50%', mt: 3 }}>
           <Typography variant='body1' sx={{ display: 'inline-block' }}>
             המשך לטיפים
           </Typography>

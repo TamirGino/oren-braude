@@ -88,7 +88,7 @@ export default function StepOneOne(props) {
               endIcon={
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <Typography variant='body1' sx={{ display: 'inline-block' }}>
-                    התחל
+                    המשך
                   </Typography>
                   <KeyboardBackspaceIcon sx={{ mr: 1 }} />
                 </Box>
