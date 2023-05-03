@@ -81,16 +81,16 @@ export default function StepOneOne(props) {
             <FormInput label='שם פרטי' type='text' name='name' focused required />
             <FormInput label='שם משפחה' type='text' name='Lname' focused required />
             <FormInput label='כתובת מייל' type='email' name='email' focused required />
-            <Divider sx={{ borderBottomWidth: 2 }} />{' '}
+            {/* <Divider sx={{ borderBottomWidth: 5 }} />{' '} */}
             <LoadingButton
-              variant='text'
+              variant='contained'
               type='submit'
               endIcon={
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <Typography variant='body1' sx={{ display: 'inline-block' }}>
                     המשך
                   </Typography>
-                  <KeyboardBackspaceIcon sx={{ mr: 1 }} />
+                  {/* <KeyboardBackspaceIcon sx={{ mr: 1 }} /> */}
                 </Box>
               }
               loading={isLoading}
@@ -99,9 +99,9 @@ export default function StepOneOne(props) {
                 fontSize: '15px',
                 py: '0.6rem',
                 mt: 4,
-                width: '40%',
+                width: '100%',
                 marginInline: 'auto',
-                // borderRadius:'15px'
+                borderRadius:'5px'
               }}
             ></LoadingButton>
           </Box>

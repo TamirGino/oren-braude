@@ -16,7 +16,7 @@ export default function Output(props) {
   const labels = [
     { text: '😭', fontSize: 23 },
     { text: '😔', fontSize: 23 },
-    { text: '😬', fontSize: 23 }, // 🫤
+    { text: '😐', fontSize: 23 }, 
     { text: '🙂', fontSize: 23 },
     { text: '😁', fontSize: 23 },
   ];
@@ -49,7 +49,8 @@ export default function Output(props) {
     if (props.exist[0]) {
       return props.sum;
       // return Math.round((props.sum / (props.numOfQuestions * 5)) * 120);
-    } else {
+    } else { // not exist
+      console.log(Math.round((props.sum / (props.numOfQuestions * 5)) * 100))
       return Math.round((props.sum / (props.numOfQuestions * 5)) * 100);
     }
   };

@@ -13,12 +13,23 @@ import StepTwo from '../Survey/StepTwo';
 import Output from '../Output/Output';
 import { Box, Divider, IconButton, Stack, Step, StepLabel, Stepper, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
+
+const Alert = React.forwardRef(function Alert(
+  props,
+  ref,
+) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const steps = ['רישום', 'צום', 'תלות בפחמימות', 'אנרגיה וריכוז', 'רעב ואימונים'];
 
 export default function Form(props) {
   
+  const [openSnack, setOpenSnack] = React.useState(false);
 
   const initialValue = [{ id: 0, value: 0 }];
 
@@ -35,7 +46,7 @@ export default function Form(props) {
   }, 0);
 
   const [userEmail, setUserEmail] = React.useState('');
-  const [btnDisabled, setBtnDisabled] = React.useState(true);
+  const [naxtBtnDisabled, setNextBtnDisabled] = React.useState(true);
   const [activeStep, setActiveStep] = React.useState(0);
   const [tempArray, setTempArray] = React.useState([{ value: 0 }]);
   const [scoreCount, setScoreCount] = React.useState(initialValue);
@@ -55,10 +66,12 @@ export default function Form(props) {
   }, []);
 
   const handleNext = () => {
-    if (activeStep === steps.length) {
-      props.onClose();
+    if (naxtBtnDisabled){
+      console.log("TRUEEEEEE")
+      setOpenSnack(true);
     } else {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      setNextBtnDisabled(true);
     }
   };
 
@@ -66,7 +79,7 @@ export default function Form(props) {
     if (score === -1) {
       // user doesn't exists
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
-      setBtnDisabled(false);
+      // setBtnDisabled(false);
     } else {
       // user exists
       const newArray = [...tempArray];
@@ -79,8 +92,15 @@ export default function Form(props) {
     }
   };
 
+  const checkValuesArray = (valuesArray) => {
+    console.log(valuesArray)
+    const isZeroArray = Object.values(valuesArray).map(val => val === 0 || val === null);
+    console.log(isZeroArray)
+    setNextBtnDisabled(isZeroArray.includes(true))
+  }
+
+
   const updateCount = (count) => {
-    console.log(count);
     if (activeStep === 1) {
       scoreCount[0].value = count;
     }
@@ -95,6 +115,7 @@ export default function Form(props) {
       scoreCount[3].value = count;
       console.log(scoreCount);
     }
+    console.log(scoreCount,scoreCount.reduce((prev, obj) => prev + obj.value, 0));
   };
 
   const handleClose = (event, reason = 'backdropClick' | 'escapeKeyDown') => {
@@ -105,12 +126,14 @@ export default function Form(props) {
     }
   };
 
+  const handleCloseAlert = () => {
+    setOpenSnack(false);
+  };
+
   const handleEmail = (val) => {
     console.log(val);
     setUserEmail(val);
   };
-
-
 
   return (
     <Dialog
@@ -124,7 +147,7 @@ export default function Form(props) {
         style: {
           margin: 0,
           maxWidth: 'none',
-          maxHeight: 'none',
+          maxHeight: '{props.fullScreen ? 100% : 90%}'
         },
       }}
     >
@@ -150,8 +173,8 @@ export default function Form(props) {
           </IconButton>
           <Stepper activeStep={activeStep} sx={{ height: 90, '& .MuiStepConnector-root ': { width: '0px' } }} alternativeLabel>
             {steps.map((label, index) => {
-              const stepProps = {};
               const labelProps = {};
+              const stepProps = {};
               return (
                 <Step key={label} {...stepProps}>
                   <StepLabel {...labelProps}>{label}</StepLabel>
@@ -174,13 +197,13 @@ export default function Form(props) {
               {activeStep === 0 ? (
                 <StepOne handleForm={handleForm} handleEmail={handleEmail} />
               ) : activeStep === 1 ? (
-                <StepTwo section={'sectionOne'} updateCount={updateCount} />
+                <StepTwo section={'sectionOne'} updateCount={updateCount} checkValuesArray={checkValuesArray} />
               ) : activeStep === 2 ? (
-                <StepThree section={'sectionTwo'} updateCount={updateCount} />
+                <StepThree section={'sectionTwo'} updateCount={updateCount} checkValuesArray={checkValuesArray}/>
               ) : activeStep === 3 ? (
-                <StepFour section={'sectionThree'} updateCount={updateCount} />
+                <StepFour section={'sectionThree'} updateCount={updateCount} checkValuesArray={checkValuesArray}/>
               ) : (
-                <StepFive section={'sectionFour'} updateCount={updateCount} />
+                <StepFive section={'sectionFour'} updateCount={updateCount} checkValuesArray={checkValuesArray}/>
               )}
             </React.Fragment>
           )}
@@ -191,12 +214,22 @@ export default function Form(props) {
       <DialogActions>
         <Box sx={{ display: 'flex', flexDirection: 'row', pt: 0 }}>
           <Box sx={{ flex: '1 1 auto' }} />
-          <Button disabled={btnDisabled} onClick={handleNext}>
-            {activeStep > 0 ? (activeStep === steps.length ? '' : 'הבא') : ''}
-          </Button>
-          {/* <Button variant='text' color='error' sx={{ fontSize: '20px', justifyContent: 'center' }} onClick={handleClose}>
-              {activeStep === steps.length ? 'סיים' : 'ביטול'}
-            </Button> */}
+        {activeStep !== 0 && activeStep !== steps.length && (
+              <Button
+                onClick={handleNext}
+                variant="outlined"
+                sx={{ fontSize: '18px' }}
+              >
+                {activeStep === steps.length - 1 ? 'לתוצאות' : 'הבא'}
+                <KeyboardBackspaceIcon sx={{ mr: 1 }} />
+              </Button>
+              
+            )}
+              <Snackbar open={openSnack} autoHideDuration={3000} onClose={handleCloseAlert} >
+                <Alert severity="error" sx={{ width: '100%', justifyContent: 'center' }}>
+                    &nbsp; יש לענות על כל השאלות 
+                </Alert>
+              </Snackbar>
         </Box>
       </DialogActions>
     </Dialog>

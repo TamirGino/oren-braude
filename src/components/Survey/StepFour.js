@@ -14,7 +14,7 @@ export default function StepFour(props) {
       try {
         const data = await getDocs(questionsColectionRef);
         const filteredData = data.docs.map((doc) => {
-          values.current[doc.id] = 1;
+          values.current[doc.id] = 0;
           return { ...doc.data(), id: doc.id };
         });
 
@@ -33,6 +33,7 @@ export default function StepFour(props) {
     values.current[id] = value;
     const count = questionsList.reduce((prev, q) => prev + values.current[q.id], 0);
     props.updateCount(count);
+    props.checkValuesArray(values.current)
   };
 
   return (

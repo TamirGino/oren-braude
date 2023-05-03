@@ -4,18 +4,19 @@ import { styled } from '@mui/material/styles';
 
 // 👇 Styled Material UI TextField Component
 const CssTextField = styled(TextField)({
-  // '& label': {
-  //   width: '100%',
-  //   textAlign: 'right',
-  //   transformOrigin: 'right',
-  //   '&.Mui-focused': {
-  //     transformOrigin: 'right',
-  //   },
-  // },
+  '& label': {
+    width: '100%',
+    textAlign: 'right',
+    transformOrigin: 'right',
+    '&.Mui-focused': {
+      transformOrigin: 'right',
+    },
+  },
 
   '& label.Mui-focused': {
     color: '#5e5b5d',
     fontWeight: 600,
+    fontSize: 18,
   },
   '& .MuiInputBase-input': {
     borderColor: '#c8d0d4',
@@ -31,7 +32,7 @@ const CssTextField = styled(TextField)({
     },
     '& fieldset': {
       borderColor: '#c8d0d4',
-      borderRadius: 0,
+      borderRadius: 5,
     },
     '&:hover fieldset': {
       border: '1px solid #c8d0d4',
@@ -41,9 +42,12 @@ const CssTextField = styled(TextField)({
     },
   },
   '& .MuiInputLabel-root': {
-    textAlign: 'center',
+    textAlign: 'right',
+    
   },
 });
+
+
 
 
 export default function FormInput ({ name, ...otherProps }) {
@@ -58,7 +62,7 @@ export default function FormInput ({ name, ...otherProps }) {
       control={control}
       name={name}
       defaultValue=''
-      render={({ field }) => <CssTextField {...field} {...otherProps} variant='outlined' sx={{fontSize:'50px', mb: '1.5rem' }} error={!!errors[name]} helperText={errors[name] ? errors[name]?.message : ''} />}
+      render={({ field }) => <CssTextField {...field} {...otherProps} variant='standard' sx={{fontSize:'50px', mb: '1.5rem' }} error={!!errors[name]} helperText={errors[name] ? errors[name]?.message : ''} />}
     />
   );
 };

@@ -20,23 +20,23 @@ const StyledRating = styled(Rating)(({ theme }) => ({
 
 const customIcons = {
   1: {
-    icon: <LooksOneOutlinedIcon color='error' />,
+    icon: <LooksOneOutlinedIcon color='primary' />,
     label: 'Very Dissatisfied',
   },
   2: {
-    icon: <LooksTwoOutlinedIcon color='warning' />,
+    icon: <LooksTwoOutlinedIcon color='primary' />,
     label: 'Dissatisfied',
   },
   3: {
-    icon: <Looks3OutlinedIcon sx={{ color: '#fbc02d' }} />,
+    icon: <Looks3OutlinedIcon color='primary' />,
     label: 'Neutral',
   },
   4: {
-    icon: <Looks4OutlinedIcon sx={{ color: '#64dd17' }} />, 
+    icon: <Looks4OutlinedIcon color='primary' />, 
     label: 'Satisfied',
   },
   5: {
-    icon: <Looks5OutlinedIcon color='success' />,
+    icon: <Looks5OutlinedIcon color='primary' />,
     label: 'Very Satisfied',
   },
 };
@@ -56,15 +56,15 @@ export default function Question(props) {
   
 
   return (
-    <div dir='rtl'>
-      <Typography fontSize={18} >
+    <div >
+      <Typography fontSize={18} align='center' >
         {props.question}
         {props.val}
       </Typography>
       <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '15px' }}>
         <StyledRating
           name='highlight-selected-only'
-          defaultValue={1}
+          defaultValue={0}
           IconContainerComponent={IconContainer}
           getLabelText={(value) => customIcons[value].label}
           highlightSelectedOnly
