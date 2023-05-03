@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
-import { Grid, Box, Typography, Divider, CircularProgress } from '@mui/material';
+import { Grid, Box, Typography, CircularProgress } from '@mui/material';
 import { useForm, FormProvider } from 'react-hook-form';
 import { object, string } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import FormInput from '../Form/FormInput';
-import Start from '@mui/icons-material/Start';
-import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
-import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import { LoadingButton } from '@mui/lab';
 import { db } from '../../config/firebase';
 
@@ -23,7 +20,6 @@ export const checkEmailExists = async (email) => {
   const q = query(collection(db, 'users'), where('email', '==', email));
   const doc = await getDocs(q);
   if (doc.size > 0) {
-    console.log(doc.docs[0].data().score);
     return doc.docs[0].data().score;
   } else {
     return -1;
@@ -31,6 +27,9 @@ export const checkEmailExists = async (email) => {
 };
 
 export default function StepOneOne(props) {
+
+  const [isLoading, setIsLoading] = useState(false);
+
   // 👇 Default Values
   const defaultValues = {
     name: '',
@@ -43,12 +42,10 @@ export default function StepOneOne(props) {
     defaultValues,
   });
 
-  const [isLoading, setIsLoading] = useState(false);
 
   // 👇 Form Handler
   const onSubmitHandler = async (values) => {
     setIsLoading(true);
-    console.log(values.email);
     const emailExists = await checkEmailExists(values.email);
     if (emailExists === -1) {
       //Email doesn't exist in database!;
@@ -56,7 +53,7 @@ export default function StepOneOne(props) {
         const newUser = doc(collection(db, 'users'));
         await setDoc(newUser, { id: newUser.id, email: values.email, first_name: values.name, last_name: values.Lname, open: true, score: -1 });
       } catch (err) {
-        console.log(err);
+        //console.log(err);
       }
     }
     callSetTimeout(emailExists);
@@ -66,13 +63,11 @@ export default function StepOneOne(props) {
   const callSetTimeout = (emailExists) => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-      console.log('This will run after 2 second!');
       props.handleForm(emailExists);
     }, 2000);
     return () => clearTimeout(timer);
   };
 
-  // 👇 Returned JSX
   return (
     <FormProvider {...methods}>
       <Grid item container justifyContent='center'>
@@ -81,7 +76,6 @@ export default function StepOneOne(props) {
             <FormInput label='שם פרטי' type='text' name='name' focused required />
             <FormInput label='שם משפחה' type='text' name='Lname' focused required />
             <FormInput label='כתובת מייל' type='email' name='email' focused required />
-            {/* <Divider sx={{ borderBottomWidth: 5 }} />{' '} */}
             <LoadingButton
               variant='contained'
               type='submit'
@@ -90,7 +84,6 @@ export default function StepOneOne(props) {
                   <Typography variant='body1' sx={{ display: 'inline-block' }}>
                     המשך
                   </Typography>
-                  {/* <KeyboardBackspaceIcon sx={{ mr: 1 }} /> */}
                 </Box>
               }
               loading={isLoading}

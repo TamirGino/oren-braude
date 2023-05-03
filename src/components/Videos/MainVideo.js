@@ -10,12 +10,6 @@ export default function MainVideo(props) {
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
-  console.log(props.fullScreen);
-
-  const handleClose = () => {
-    props.onClose();
-  };
-  
 
   const normal = {
     height: '500',
@@ -31,6 +25,10 @@ export default function MainVideo(props) {
     playerVars: {
       autoplay: 1,
     },
+  };
+
+  const handleClose = () => {
+    props.onClose();
   };
        
   return (

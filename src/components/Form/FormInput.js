@@ -47,9 +47,6 @@ const CssTextField = styled(TextField)({
   },
 });
 
-
-
-
 export default function FormInput ({ name, ...otherProps }) {
   // 👇 Utilizing useFormContext to have access to the form Context
   const {
@@ -66,4 +63,3 @@ export default function FormInput ({ name, ...otherProps }) {
     />
   );
 };
-

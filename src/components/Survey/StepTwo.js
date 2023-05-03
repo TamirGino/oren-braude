@@ -3,16 +3,15 @@ import Stack from '@mui/material/Stack';
 import Question from '../Question/Question';
 import { db } from '../../config/firebase';
 import { getDocs, collection } from 'firebase/firestore';
-import { Alert, AlertTitle, Box, Collapse, Typography } from '@mui/material';
+import { Alert, Box, Typography } from '@mui/material';
 
 export default function StepTwo(props) {
+
   const [questionsList, setQuestionsList] = React.useState([]);
   const questionsColectionRef = collection(db, 'fast');
-  const [open, setOpen] = React.useState(true);
   const values = React.useRef({});
 
   React.useEffect(() => {
-    const questionsColectionRef = collection(db, 'fast');
     const getQuestions = async () => {
       try {
         const data = await getDocs(questionsColectionRef);
@@ -20,15 +19,11 @@ export default function StepTwo(props) {
           values.current[doc.id] = 0;
           return { ...doc.data(), id: doc.id };
         });
-
-        console.log(values.current);
-
         setQuestionsList(filteredData);
       } catch (err) {
-        console.log(err);
+        //console.log(err);
       }
     };
-
     getQuestions();
   }, []);
 

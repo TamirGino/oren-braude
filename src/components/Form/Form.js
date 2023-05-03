@@ -11,26 +11,23 @@ import StepFour from '../Survey/StepFour';
 import StepFive from '../Survey/StepFive';
 import StepTwo from '../Survey/StepTwo';
 import Output from '../Output/Output';
-import { Box, Divider, IconButton, Stack, Step, StepLabel, Stepper, Typography } from '@mui/material';
+import { Box, Divider, IconButton, Stack, Step, StepLabel, Stepper } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
-
 import Snackbar from '@mui/material/Snackbar';
-import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import MuiAlert from '@mui/material/Alert';
 
 const Alert = React.forwardRef(function Alert(
   props,
   ref,
 ) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  return <MuiAlert elevation={8} ref={ref} variant="filled" {...props} />;
 });
 
 const steps = ['רישום', 'צום', 'תלות בפחמימות', 'אנרגיה וריכוז', 'רעב ואימונים'];
 
 export default function Form(props) {
   
-  const [openSnack, setOpenSnack] = React.useState(false);
-
   const initialValue = [{ id: 0, value: 0 }];
 
   const initialArray = [
@@ -50,24 +47,20 @@ export default function Form(props) {
   const [activeStep, setActiveStep] = React.useState(0);
   const [tempArray, setTempArray] = React.useState([{ value: 0 }]);
   const [scoreCount, setScoreCount] = React.useState(initialValue);
-
+  const [openSnack, setOpenSnack] = React.useState(false);
 
   React.useEffect(() => {
-    console.log(props.exist[1]);
-    console.log(props.open);
-    if (props.exist[0]) {
-      console.log('EXIST');
+    if (props.exist[0]) { //Exist
+
       setScoreCount(props.exist[1]);
       setActiveStep(steps.length);
-    } else {
-      console.log('NOT EXIST');
+    } else { // Not Exist
       setScoreCount(initialArray);
     }
   }, []);
 
   const handleNext = () => {
     if (naxtBtnDisabled){
-      console.log("TRUEEEEEE")
       setOpenSnack(true);
     } else {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -79,26 +72,21 @@ export default function Form(props) {
     if (score === -1) {
       // user doesn't exists
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
-      // setBtnDisabled(false);
     } else {
       // user exists
       const newArray = [...tempArray];
       newArray[0].value = score;
       setTempArray(newArray);
       setScoreCount(tempArray);
-      console.log(tempArray);
       props.handleUserExist(tempArray);
       setActiveStep(steps.length);
     }
   };
 
   const checkValuesArray = (valuesArray) => {
-    console.log(valuesArray)
     const isZeroArray = Object.values(valuesArray).map(val => val === 0 || val === null);
-    console.log(isZeroArray)
     setNextBtnDisabled(isZeroArray.includes(true))
   }
-
 
   const updateCount = (count) => {
     if (activeStep === 1) {
@@ -109,18 +97,15 @@ export default function Form(props) {
     }
     if (activeStep === 3) {
       scoreCount[2].value = count;
-      console.log(scoreCount);
     }
     if (activeStep === 4) {
       scoreCount[3].value = count;
-      console.log(scoreCount);
     }
-    console.log(scoreCount,scoreCount.reduce((prev, obj) => prev + obj.value, 0));
   };
 
   const handleClose = (event, reason = 'backdropClick' | 'escapeKeyDown') => {
     if (reason === 'backdropClick') {
-      console.log(reason, event);
+      // console.log(reason, event);
     } else {
       props.onClose();
     }
@@ -131,7 +116,6 @@ export default function Form(props) {
   };
 
   const handleEmail = (val) => {
-    console.log(val);
     setUserEmail(val);
   };
 
@@ -209,7 +193,6 @@ export default function Form(props) {
           )}
         </DialogContentText>
       </DialogContent>
-      {/* <Divider></Divider> */}
       {activeStep > 0 ?? <Divider></Divider>}
       <DialogActions>
         <Box sx={{ display: 'flex', flexDirection: 'row', pt: 0 }}>

@@ -11,7 +11,6 @@ function App() {
   const [formOpen, setFormOpen] = useState(false);
   const [videoOpen, setVideoOpen] = useState(false);
   const [isUserExist, setIsUserExist] = React.useState([false, 0]);
-
   const fullScreen = useMediaQuery('(max-width:600px)');
 
   const handleUserExist = (score) => {
@@ -32,9 +31,6 @@ function App() {
   const handleVideoClose = () => {
     setVideoOpen(false);
   };
-
-  
-
 
   return (
     <>

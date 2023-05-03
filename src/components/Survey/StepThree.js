@@ -5,6 +5,7 @@ import { db } from '../../config/firebase';
 import { getDocs, collection } from 'firebase/firestore';
 
 export default function StepThree(props) {
+
   const [questionsList, setQuestionsList] = React.useState([]);
   const questionsColectionRef = collection(db, 'dependence on carbohydrates');
   const values = React.useRef({});
@@ -17,15 +18,11 @@ export default function StepThree(props) {
           values.current[doc.id] = 0;
           return { ...doc.data(), id: doc.id };
         });
-
-        console.log(values.current);
-
         setQuestionsList(filteredData);
       } catch (err) {
-        console.log(err);
+        //console.log(err);
       }
     };
-
     getQuestions();
   }, []);
 

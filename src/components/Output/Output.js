@@ -1,14 +1,13 @@
 import * as React from 'react';
-import { Box, Button, Fab, Grid, Grow, IconButton, Typography } from '@mui/material';
+import { Box, Fab, Grow, Typography } from '@mui/material';
 import ReactSpeedometer from 'react-d3-speedometer';
 import { db } from '../../config/firebase';
-import { addDoc, collection, doc, getDoc, updateDoc, getDocs, query, setDoc, where } from 'firebase/firestore';
-import { checkEmailExists } from '../Survey/StepOne';
+import { collection, doc, updateDoc, getDocs, query, where } from 'firebase/firestore';
 import TipsAndUpdatesOutlinedIcon from '@mui/icons-material/TipsAndUpdatesOutlined';
 import MainVideo from '../Videos/MainVideo';
-import OndemandVideoOutlinedIcon from '@mui/icons-material/OndemandVideoOutlined';
 
 export default function Output(props) {
+
   const [Delay, setDelay] = React.useState(false);
   const [videoOpen, setVideoOpen] = React.useState(false);
   const [comment, setComment] = React.useState('');
@@ -21,42 +20,7 @@ export default function Output(props) {
     { text: '😁', fontSize: 23 },
   ];
 
-  const updateUserScore = async (email, score) => {
-    const usersRef = collection(db, 'users');
-    const q = query(usersRef, where('email', '==', email));
-
-    try {
-      const querySnapshot = await getDocs(q);
-      if (querySnapshot.empty) {
-        console.error('No matching documents');
-        return;
-      }
-      const userDoc = querySnapshot.docs[0];
-      const userData = userDoc.data();
-      const currentScore = userData.score;
-      if (currentScore !== -1) {
-        console.log(`Score for user ${email} is not -1. Not updating score.`);
-        return;
-      }
-      await updateDoc(doc(usersRef, userDoc.id), { score });
-      console.log(`Score updated for user ${email}`);
-    } catch (error) {
-      console.error('Error updating user score:', error);
-    }
-  };
-
-  const calcScore = () => {
-    if (props.exist[0]) {
-      return props.sum;
-      // return Math.round((props.sum / (props.numOfQuestions * 5)) * 120);
-    } else { // not exist
-      console.log(Math.round((props.sum / (props.numOfQuestions * 5)) * 100))
-      return Math.round((props.sum / (props.numOfQuestions * 5)) * 100);
-    }
-  };
-
   React.useEffect(() => {
-    console.log(props.numOfQuestions, props.sum, props.exist[0]);
     updateUserScore(props.userEmail, calcScore());
     const timer = setTimeout(() => {
       setDelay(true);
@@ -72,6 +36,38 @@ export default function Output(props) {
     }
   }, []);
 
+  const updateUserScore = async (email, score) => {
+    const usersRef = collection(db, 'users');
+    const q = query(usersRef, where('email', '==', email));
+
+    try {
+      const querySnapshot = await getDocs(q);
+      if (querySnapshot.empty) {
+        // console.error('No matching documents');
+        return;
+      }
+      const userDoc = querySnapshot.docs[0];
+      const userData = userDoc.data();
+      const currentScore = userData.score;
+      if (currentScore !== -1) {
+        // console.log(`Score for user ${email} is not -1. Not updating score.`);
+        return;
+      }
+      await updateDoc(doc(usersRef, userDoc.id), { score });
+      // console.log(`Score updated for user ${email}`);
+    } catch (error) {
+      // console.error('Error updating user score:', error);
+    }
+  };
+
+  const calcScore = () => {
+    if (props.exist[0]) {
+      return props.sum;
+    } else { // not exist
+      return Math.round((props.sum / (props.numOfQuestions * 5)) * 100);
+    }
+  };
+
   const handelVideoOpen = () => {
     setVideoOpen(true);
   };
@@ -86,15 +82,12 @@ export default function Output(props) {
         needleHeightRatio={props.fullScreen ? 0.5 : 0.7}
         maxValue='5'
         value={calcScore() / 20}
-        // currentValueText={`מידת הגמישות המטבולית שלך היא: ${calcScore()} `}
         ringWidth={47}
         needleTransitionDuration={3333}
         needleColor={'#90f2ff'}
         textColor={'#0d446c'}
         customSegmentLabels={labels}
         currentValueText={' '}
-        // currentValueText={<Typography variant='body1'>מידת הגמישות המטבולית שלך היא: {calcScore()}</Typography>}
-        //segmentColors={['#bf616a', '#d08770', '#ebcb8b', '#a3be8c', '#B48E8E']}
       />
       <Typography sx={{ fontSize: 23, fontFamily: 'Roboto', color: '#022641', mt: -2 }} variant='h6'>
         מידת הגמישות המטבולית שלך היא: <strong>{calcScore()}</strong>

@@ -50,10 +50,7 @@ export default function Question(props) {
 
   const handleChange = (event, value) => {
     props.onChange(event, value);
-    console.log(value)
   };
-
-  
 
   return (
     <div >
