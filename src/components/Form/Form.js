@@ -44,7 +44,7 @@ export default function Form(props) {
 
   const [userEmail, setUserEmail] = React.useState('');
   const [naxtBtnDisabled, setNextBtnDisabled] = React.useState(true);
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = React.useState(1);
   const [tempArray, setTempArray] = React.useState([{ value: 0 }]);
   const [scoreCount, setScoreCount] = React.useState(initialValue);
   const [openSnack, setOpenSnack] = React.useState(false);
@@ -66,6 +66,10 @@ export default function Form(props) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
       setNextBtnDisabled(true);
     }
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
   const handleForm = (score) => {
@@ -193,10 +197,19 @@ export default function Form(props) {
           )}
         </DialogContentText>
       </DialogContent>
-      {activeStep > 0 ?? <Divider></Divider>}
-      <DialogActions>
-        <Box sx={{ display: 'flex', flexDirection: 'row', pt: 0 }}>
-          <Box sx={{ flex: '1 1 auto' }} />
+      
+      <DialogActions sx={{ display: 'flex', flexDirection: 'row', pt: 0 }} >
+          
+          <Button
+                sx={{ fontSize: '18px' }}
+                disabled={activeStep === 0}
+                onClick={handleBack}
+                variant="outlined"
+                // sx={{ mr: 1 }}
+              >
+                Back
+              </Button>
+              <Box sx={{ flex: '1 1 auto' }} />
         {activeStep !== 0 && activeStep !== steps.length && (
               <Button
                 onClick={handleNext}
@@ -213,8 +226,7 @@ export default function Form(props) {
                     &nbsp; יש לענות על כל השאלות 
                 </Alert>
               </Snackbar>
-        </Box>
-      </DialogActions>
+        </DialogActions>
     </Dialog>
   );
 }
