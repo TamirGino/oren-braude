@@ -3,7 +3,7 @@ import { Grid, Box, Typography, CircularProgress } from '@mui/material';
 import { useForm, FormProvider } from 'react-hook-form';
 import { object, string } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import FormInput from '../Form/FormInput';
+import FormInput from './FormInput';
 import { LoadingButton } from '@mui/lab';
 import { db } from '../../config/firebase';
 
@@ -26,7 +26,7 @@ export const checkEmailExists = async (email) => {
   }
 };
 
-export default function StepOneOne(props) {
+export default function Register(props) {
 
   const [isLoading, setIsLoading] = useState(false);
 

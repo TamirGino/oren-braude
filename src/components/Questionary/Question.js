@@ -50,18 +50,23 @@ export default function Question(props) {
 
   const handleChange = (event, value) => {
     props.onChange(event, value);
+    //console.log(Object.values(props.defaultValues)[props.id-1].value)
+    //console.log(props.id)
   };
 
   return (
     <div >
       <Typography fontSize={18} align='center' >
         {props.question}
-        {props.val}
+        {/* {props.val} */}
       </Typography>
       <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '15px' }}>
         <StyledRating
           name='highlight-selected-only'
-          defaultValue={0}
+          value={props.val}
+          //defaultValue={props.val ? props.val : 0}
+          //defaultValue={props.defaultValues ? Object.values(props.defaultValues)[props.questionId].value : 0}
+          //defaultValue={props.defaultValues && props.defaultValues[props.questionId]?.value ? props.defaultValues[props.questionId].value : 0}
           IconContainerComponent={IconContainer}
           getLabelText={(value) => customIcons[value].label}
           highlightSelectedOnly

@@ -13,11 +13,11 @@ export default function Output(props) {
   const [comment, setComment] = React.useState('');
 
   const labels = [
-    { text: '😭', fontSize: 23 },
-    { text: '😔', fontSize: 23 },
-    { text: '😐', fontSize: 23 }, 
-    { text: '🙂', fontSize: 23 },
-    { text: '😁', fontSize: 23 },
+    { text: '😭', fontSize: '23' },
+    { text: '😔', fontSize: '23' },
+    { text: '😐', fontSize: '23' }, 
+    { text: '🙂', fontSize: '23' },
+    { text: '😁', fontSize: '23' },
   ];
 
   React.useEffect(() => {
@@ -62,9 +62,9 @@ export default function Output(props) {
 
   const calcScore = () => {
     if (props.exist[0]) {
-      return props.sum;
+        return props.sum;
     } else { // not exist
-      return Math.round((props.sum / (props.numOfQuestions * 5)) * 100);
+        return Math.round((props.sum / (props.numOfQuestions * 5)) * 100);
     }
   };
 
@@ -76,11 +76,11 @@ export default function Output(props) {
   };
 
   return (
-    <Box container display='flex' flexDirection='column' sx={{ alignItems: 'center' }}>
+    <Box container="true" display='flex' flexDirection='column' sx={{ alignItems: 'center' }}>
       <ReactSpeedometer
         width={props.fullScreen ? 350 : 500}
         needleHeightRatio={props.fullScreen ? 0.5 : 0.7}
-        maxValue='5'
+        maxValue={5}
         value={calcScore() / 20}
         ringWidth={47}
         needleTransitionDuration={3333}

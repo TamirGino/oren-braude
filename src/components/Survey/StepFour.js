@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Stack from '@mui/material/Stack';
-import Question from '../Question/Question';
+import Question from '../Questionary/Question';
 import { db } from '../../config/firebase';
 import { getDocs, collection } from 'firebase/firestore';
 
