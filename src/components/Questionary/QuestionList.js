@@ -15,7 +15,7 @@ const collections = [
 const QuestionList = (props) => {
   const [questions, setQuestions] = useState([]);
   const collectionRef = collection(db, collections[props.collectionNum]);
-  //const containerRef = React.useRef();
+  
 
   useEffect(() => {
     const getQuestions = async () => {
@@ -42,12 +42,10 @@ const QuestionList = (props) => {
     } else {
       setQuestions(props.valuesArray[props.collectionNum - 1]);
     }
-    //const container = containerRef.current;
-    //window.scrollTo(0,0);
-    //container.scrollTop = 0;
   }, [props.collectionNum]);
 
   const handleQuestionChange = (index, value) => {
+    console.log(questions);
     const updatedQuestions = [...questions];
     updatedQuestions[index].value = value;
     setQuestions(updatedQuestions);
@@ -63,6 +61,8 @@ const QuestionList = (props) => {
             key={question.id}
             question={question.question}
             val={question.value}
+            {...(question.descFive && { descFive: question.descFive })}
+            {...(question.descOne && { descOne: question.descOne })}
             onChange={(event, value) => handleQuestionChange(index, value)}
           />
         </div>

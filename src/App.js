@@ -51,7 +51,7 @@ function App() {
           }}
         >
           ענה על השאלון
-          <ContentPasteOutlinedIcon sx={{ mr: 2 }} />
+          <ContentPasteOutlinedIcon sx={{ mr: 4 }} />
         </Fab>
         <Fab
           variant='extended'

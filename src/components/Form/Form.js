@@ -6,19 +6,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Register from "../Register/Register";
 import Output from "../Output/Output";
-import {
-  Box,
-  Divider,
-  IconButton,
-  Stack,
-  Step,
-  StepLabel,
-  Stepper,
-  Typography,
-} from "@mui/material";
+import {Box, Divider, IconButton, Stack, Step, StepLabel, Stepper,} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import EastIcon from '@mui/icons-material/East';
-import WestIcon from '@mui/icons-material/West';
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import QuestionList from "../Questionary/QuestionList";
@@ -49,13 +38,19 @@ export default function Form(props) {
     return accumulator + currentValue.value;
   }, 0);
 
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = React.useState(1);
   const [openSnack, setOpenSnack] = React.useState(false);
-  const [naxtBtnDisabled, setNextBtnDisabled] = React.useState(true);
   const [tempArray, setTempArray] = React.useState([{ value: 0 }]);
   const [scoreCount, setScoreCount] = React.useState(initialValue);
   const [userEmail, setUserEmail] = React.useState("");
   const [valuesArray, setValuesArray] = React.useState([[], [], [], []]);
+  const dialogContentRef = React.useRef(null);
+
+  React.useEffect(() => {
+    if (dialogContentRef.current) {
+      dialogContentRef.current.scrollTop = 0;
+    }
+  }, [activeStep]);
 
   React.useEffect(() => {
     if (props.exist[0]) {
@@ -103,24 +98,15 @@ export default function Form(props) {
   };
 
   const handleNext = () => {
-    // if (naxtBtnDisabled) {
-    //   setOpenSnack(true);
-    // } else {
-       console.log(valuesArray[activeStep - 1])
-
       if (checkMoveForward(valuesArray[activeStep -1])){
-        setNextBtnDisabled(false);
         setOpenSnack(true);
       } else{
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        setNextBtnDisabled(true);
       }   
-    //}
   };
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    setNextBtnDisabled(false)
   };
 
   const handleForm = (score) => {
@@ -139,7 +125,6 @@ export default function Form(props) {
   };
 
   const checkMoveForward = (valuesArr) => {
-    //console.log(valuesArr)
     if (valuesArr.length === 0) {
       return true;
     }
@@ -154,11 +139,9 @@ export default function Form(props) {
 
   const moveForwardAndUpdate = (valuesArr) => {
     if (checkMoveForward(valuesArr)){
-      setNextBtnDisabled(true);
       return;
-    } else{
-      setNextBtnDisabled(false);
-    }
+    } 
+
 
     const sum = valuesArr.reduce((accumulator, item) => accumulator + item.value, 0);
     const updatedScoreCount = [...scoreCount];
@@ -175,7 +158,6 @@ export default function Form(props) {
 
       // Replace the object at the activeStep index with the new values
       updatedValues[activeStep - 1] = values;
-      //console.log(updatedValues);
       setValuesArray(updatedValues);
     }
   };
@@ -199,7 +181,7 @@ export default function Form(props) {
     <Dialog
       open={props.open}
       onClose={handleClose}
-      scroll={"paper"}
+      scroll="paper"
       aria-labelledby="scroll-dialog-title"
       aria-describedby="scroll-dialog-description"
       fullScreen={props.fullScreen}
@@ -254,7 +236,7 @@ export default function Form(props) {
         </Stack>
       </DialogTitle>
       <Divider sx={{ borderBottomWidth: 2 }}/>
-      <DialogContent>{getStepContent(activeStep)}</DialogContent>
+      <DialogContent ref={dialogContentRef}>{getStepContent(activeStep)}</DialogContent>
       {activeStep > 0 && activeStep !== steps.length && <Divider sx={{ borderBottomWidth: 2 }}/> }
       <DialogActions sx={{ display: "flex", flexDirection: "row", pt: 0 }}>
       {activeStep !== 0 && activeStep !== steps.length && activeStep !== 1 && (

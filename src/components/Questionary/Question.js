@@ -1,18 +1,18 @@
-import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import Rating from '@mui/material/Rating';
-import LooksOneOutlinedIcon from '@mui/icons-material/LooksOneOutlined';
-import LooksTwoOutlinedIcon from '@mui/icons-material/LooksTwoOutlined';
-import Looks3OutlinedIcon from '@mui/icons-material/Looks3Outlined';
-import Looks4OutlinedIcon from '@mui/icons-material/Looks4Outlined';
-import Looks5OutlinedIcon from '@mui/icons-material/Looks5Outlined';
-import { Typography } from '@mui/material';
+import * as React from "react";
+import { styled } from "@mui/material/styles";
+import Rating from "@mui/material/Rating";
+import LooksOneOutlinedIcon from "@mui/icons-material/LooksOneOutlined";
+import LooksTwoOutlinedIcon from "@mui/icons-material/LooksTwoOutlined";
+import Looks3OutlinedIcon from "@mui/icons-material/Looks3Outlined";
+import Looks4OutlinedIcon from "@mui/icons-material/Looks4Outlined";
+import Looks5OutlinedIcon from "@mui/icons-material/Looks5Outlined";
+import { Typography } from "@mui/material";
 
 const StyledRating = styled(Rating)(({ theme }) => ({
-  '& .MuiRating-iconEmpty .MuiSvgIcon-root': {
+  "& .MuiRating-iconEmpty .MuiSvgIcon-root": {
     color: theme.palette.action.disabled,
   },
-  '& .MuiSvgIcon-root': {
+  "& .MuiSvgIcon-root": {
     fontSize: 35,
   },
   direction: theme.direction,
@@ -20,24 +20,24 @@ const StyledRating = styled(Rating)(({ theme }) => ({
 
 const customIcons = {
   1: {
-    icon: <LooksOneOutlinedIcon color='primary' />,
-    label: 'Very Dissatisfied',
+    icon: <LooksOneOutlinedIcon color="primary" />,
+    label: "Very Dissatisfied",
   },
   2: {
-    icon: <LooksTwoOutlinedIcon color='primary' />,
-    label: 'Dissatisfied',
+    icon: <LooksTwoOutlinedIcon color="primary" />,
+    label: "Dissatisfied",
   },
   3: {
-    icon: <Looks3OutlinedIcon color='primary' />,
-    label: 'Neutral',
+    icon: <Looks3OutlinedIcon color="primary" />,
+    label: "Neutral",
   },
   4: {
-    icon: <Looks4OutlinedIcon color='primary' />, 
-    label: 'Satisfied',
+    icon: <Looks4OutlinedIcon color="primary" />,
+    label: "Satisfied",
   },
   5: {
-    icon: <Looks5OutlinedIcon color='primary' />,
-    label: 'Very Satisfied',
+    icon: <Looks5OutlinedIcon color="primary" />,
+    label: "Very Satisfied",
   },
 };
 
@@ -47,22 +47,20 @@ function IconContainer(props) {
 }
 
 export default function Question(props) {
-
   const handleChange = (event, value) => {
     props.onChange(event, value);
-    //console.log(Object.values(props.defaultValues)[props.id-1].value)
-    //console.log(props.id)
   };
 
   return (
-    <div >
-      <Typography fontSize={18} align='center' >
+    <div>
+      <Typography fontSize={18} align="center">
         {props.question}
-        {/* {props.val} */}
       </Typography>
-      <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '15px' }}>
+
+      <div style={{display: "flex", justifyContent: "center", paddingTop: "15px"}}>
+      <Typography sx={{color : '#2979ff', fontStyle: 'italic'}} mt={0.5} ml={3} align="left" variant="body1">{props.descFive}</Typography>
         <StyledRating
-          name='highlight-selected-only'
+          name="highlight-selected-only"
           value={props.val}
           //defaultValue={props.val ? props.val : 0}
           //defaultValue={props.defaultValues ? Object.values(props.defaultValues)[props.questionId].value : 0}
@@ -72,6 +70,7 @@ export default function Question(props) {
           highlightSelectedOnly
           onChange={handleChange}
         />
+        <Typography sx={{color : '#2979ff', fontStyle: 'italic'}} mt={0.5} mr={3} variant="body1">{props.descOne}</Typography>
       </div>
     </div>
   );
