@@ -6,7 +6,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Register from "../Register/Register";
 import Output from "../Output/Output";
-import {Box, Divider, IconButton, Stack, Step, StepLabel, Stepper,} from "@mui/material";
+import {Box, Divider, IconButton, Stack, Step, StepLabel, Stepper, Typography,} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
@@ -34,9 +34,9 @@ export default function Form(props) {
     { id: 4, value: 5 },
   ];
 
-  const numOfQuestions = initialArray.reduce((accumulator, currentValue) => {
-    return accumulator + currentValue.value;
-  }, 0);
+  // const numOfQuestions = initialArray.reduce((accumulator, currentValue) => {
+  //   return accumulator + currentValue.value;
+  // }, 0);
 
   const [activeStep, setActiveStep] = React.useState(1);
   const [openSnack, setOpenSnack] = React.useState(false);
@@ -84,11 +84,11 @@ export default function Form(props) {
           <React.Fragment>
             {/* <Typography sx={{ mt: 2, mb: 1 }}>{scoreCount.reduce((prev, obj) => prev + obj.value, 0)} </Typography> */}
           <Output
-            numOfQuestions={numOfQuestions}
             fullScreen={props.fullScreen}
             sum={scoreCount.reduce((prev, obj) => prev + obj.value, 0)}
             userEmail={userEmail}
             exist={props.exist}
+            valuesArray={valuesArray}
           />
           </React.Fragment>
         );
@@ -102,7 +102,7 @@ export default function Form(props) {
         setOpenSnack(true);
       } else{
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
-      }   
+      }
   };
 
   const handleBack = () => {
@@ -125,12 +125,16 @@ export default function Form(props) {
   };
 
   const checkMoveForward = (valuesArr) => {
+    console.log(valuesArr)
     if (valuesArr.length === 0) {
       return true;
     }
     for (let i = 0; i < valuesArr.length; i++) {
       const val = valuesArr[i].value;
-      if (val === 0 || val === null) {
+      const skip = valuesArr[i].skip;
+      
+      if ((val === 0 || val === null) && (skip === undefined || skip === false) ) {
+        console.log(skip)
         return true;
       }
     }
@@ -161,6 +165,7 @@ export default function Form(props) {
       setValuesArray(updatedValues);
     }
   };
+
   const handleClose = (event, reason = "backdropClick" | "escapeKeyDown") => {
     if (reason === "backdropClick") {
       // console.log(reason, event);

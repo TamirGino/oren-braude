@@ -45,7 +45,7 @@ const QuestionList = (props) => {
   }, [props.collectionNum]);
 
   const handleQuestionChange = (index, value) => {
-    console.log(questions);
+    //console.log(questions);
     const updatedQuestions = [...questions];
     updatedQuestions[index].value = value;
     setQuestions(updatedQuestions);
@@ -54,7 +54,7 @@ const QuestionList = (props) => {
   };
 
   return (
-    <Stack spacing={2} style={{ alignItems: "center" }}>
+    <Stack spacing={2}>
       {questions.map((question, index) => (
         <div key={index}>
           <Question

@@ -21,6 +21,7 @@ export default function Output(props) {
   ];
 
   React.useEffect(() => {
+    console.log(props.valuesArray)
     updateUserScore(props.userEmail, calcScore());
     const timer = setTimeout(() => {
       setDelay(true);
@@ -60,11 +61,43 @@ export default function Output(props) {
     }
   };
 
+  const flattenArray = (arr) => {
+    const flattenedArray = [];
+    
+    for (let i = 0; i < arr.length; i++) {
+      for (let j = 0; j < arr[i].length; j++) {
+        flattenedArray.push(arr[i][j]);
+      }
+    }
+  
+    return flattenedArray;
+  }
+  
+  const calculateAverageValue = (arr) => {
+    let sum = 0;
+    let count = 0;
+  
+    const flattenedArray = flattenArray(arr);
+  
+    flattenedArray.forEach(obj => {
+      if (obj.value !== null && obj.value !== 0) {
+        sum += obj.value;
+        count++;
+      }
+    });
+  
+    const average = count > 0 ? sum / count : 0;
+    return average;
+  }
+
   const calcScore = () => {
     if (props.exist[0]) {
+        console.log(props.sum)
         return props.sum;
     } else { // not exist
-        return Math.round((props.sum / (props.numOfQuestions * 5)) * 100);
+        console.log(calculateAverageValue(props.valuesArray) * 20)
+        //return Math.round((props.sum / (props.numOfQuestions * 5)) * 100);
+        return Math.round(calculateAverageValue(props.valuesArray) * 20)
     }
   };
 
@@ -81,7 +114,7 @@ export default function Output(props) {
         width={props.fullScreen ? 350 : 500}
         needleHeightRatio={props.fullScreen ? 0.5 : 0.7}
         maxValue={5}
-        value={calcScore() / 20}
+        value={calcScore() / 20} // devided by 20 because the range of the Speedometer is 1-5
         ringWidth={47}
         needleTransitionDuration={3333}
         needleColor={'#90f2ff'}

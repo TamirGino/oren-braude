@@ -52,26 +52,30 @@ export default function Question(props) {
   };
 
   return (
-    <div>
+    < >
       <Typography fontSize={18} align="center">
         {props.question}
       </Typography>
-
-      <div style={{display: "flex", justifyContent: "center", paddingTop: "15px"}}>
-      <Typography sx={{color : '#2979ff', fontStyle: 'italic'}} mt={0.5} ml={3} align="left" variant="body1">{props.descFive}</Typography>
-        <StyledRating
-          name="highlight-selected-only"
-          value={props.val}
-          //defaultValue={props.val ? props.val : 0}
-          //defaultValue={props.defaultValues ? Object.values(props.defaultValues)[props.questionId].value : 0}
-          //defaultValue={props.defaultValues && props.defaultValues[props.questionId]?.value ? props.defaultValues[props.questionId].value : 0}
-          IconContainerComponent={IconContainer}
-          getLabelText={(value) => customIcons[value].label}
-          highlightSelectedOnly
-          onChange={handleChange}
-        />
-        <Typography sx={{color : '#2979ff', fontStyle: 'italic'}} mt={0.5} mr={3} variant="body1">{props.descOne}</Typography>
+      
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: '15px' }}>
+        
+            <Typography sx={{color : '#2979ff', fontStyle: 'italic', flex: 1}}  align="center" variant="body2">
+              {props.descFive}
+            </Typography>
+                {props.descFive && <Typography>⇢</Typography>}
+            <StyledRating
+              name="highlight-selected-only"
+              value={props.val}
+              IconContainerComponent={IconContainer}
+              getLabelText={(value) => customIcons[value].label}
+              highlightSelectedOnly
+              onChange={handleChange}
+            />
+                {props.descOne && <Typography>⇠</Typography>}
+            <Typography sx={{color : '#2979ff', fontStyle: 'italic', flex: 1}}  align="center" variant="body2">
+              {props.descOne}
+            </Typography>
       </div>
-    </div>
+    </>
   );
 }
