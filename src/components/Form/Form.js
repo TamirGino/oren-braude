@@ -125,7 +125,7 @@ export default function Form(props) {
   };
 
   const checkMoveForward = (valuesArr) => {
-    console.log(valuesArr)
+    //console.log(valuesArr)
     if (valuesArr.length === 0) {
       return true;
     }
@@ -134,7 +134,7 @@ export default function Form(props) {
       const skip = valuesArr[i].skip;
       
       if ((val === 0 || val === null) && (skip === undefined || skip === false) ) {
-        console.log(skip)
+        //console.log(skip)
         return true;
       }
     }

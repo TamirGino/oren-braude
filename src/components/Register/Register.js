@@ -50,10 +50,27 @@ export default function Register(props) {
     if (emailExists === -1) {
       //Email doesn't exist in database!;
       try {
-        const newUser = doc(collection(db, 'users'));
-        await setDoc(newUser, { id: newUser.id, email: values.email, first_name: values.name, last_name: values.Lname, open: true, score: -1 });
+
+        const usersRef = collection(db, 'users');
+        const snapshot = await getDocs(usersRef);
+        let maxId = 0;
+
+        snapshot.forEach((doc) => {
+          const docId = parseInt(doc.id);
+          if (docId > maxId) {
+            maxId = docId;
+          }
+        });
+        const newUserId = maxId + 1;
+
+        // Add the new user to Firestore
+        const newDocRef = doc(usersRef, String(newUserId));
+        await setDoc(newDocRef, { id: newUserId, email: values.email, first_name: values.name, last_name: values.Lname, open: true, score: -1, more_info: false } );
+        
+        // const newUser = doc(collection(db, 'users'));
+        // await setDoc(newUser, { id: newUser.id, email: values.email, first_name: values.name, last_name: values.Lname, open: true, score: -1 });
       } catch (err) {
-        //console.log(err);
+        console.log(err);
       }
     }
     callSetTimeout(emailExists);

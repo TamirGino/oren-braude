@@ -11,6 +11,7 @@ export default function Output(props) {
   const [Delay, setDelay] = React.useState(false);
   const [videoOpen, setVideoOpen] = React.useState(false);
   const [comment, setComment] = React.useState('');
+  // const [userInfoUpdated, setUserInfoUpdated] = useState(false);
 
   const labels = [
     { text: '😭', fontSize: '23' },
@@ -58,6 +59,26 @@ export default function Output(props) {
       // console.log(`Score updated for user ${email}`);
     } catch (error) {
       // console.error('Error updating user score:', error);
+    }
+  };
+
+  const updateUserInfo = async () => {
+    try {
+    const usersRef = collection(db, 'users');
+    const q = query(usersRef, where('email', '==', props.userEmail));
+    const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        const docRef = querySnapshot.docs[0].ref;
+        await updateDoc(docRef, { more_info: true });
+        //await updateDoc(doc(usersRef, userDoc.id), { more_info: true });
+        //await docRef.update({ more_info: true });
+        // setUserInfoUpdated(true);
+        console.log('User information updated successfully!');
+      } else {
+        console.log('User not found!');
+      }
+    } catch (error) {
+      console.error('Error updating user information:', error);
     }
   };
 
@@ -133,7 +154,7 @@ export default function Output(props) {
           <TipsAndUpdatesOutlinedIcon sx={{ mr: 2 }} />
         </Fab>
       </Grow>
-      <MainVideo videoId={'2C4ybI41_v8'} title={comment} fullScreen={props.fullScreen} open={videoOpen} onClose={handleVideoClose}></MainVideo>
+      <MainVideo videoId={'2C4ybI41_v8'} title={comment} fullScreen={props.fullScreen} open={videoOpen} onClose={handleVideoClose} onUpdateUserInfo={updateUserInfo}></MainVideo>
     </Box>
   );
 }

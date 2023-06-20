@@ -1,9 +1,11 @@
 import React from 'react';
 import YouTube from 'react-youtube';
-import { Container, Dialog, DialogContent, DialogContentText, DialogTitle, IconButton, Link } from '@mui/material';
+import { Button, Container, Dialog, DialogContent, DialogContentText, DialogTitle, Fab, IconButton, Link } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import CloseIcon from '@mui/icons-material/Close';
+import ContentPasteOutlinedIcon from '@mui/icons-material/ContentPasteOutlined';
+
 // import Link from '@mui/material/Link';
 
 
@@ -30,6 +32,15 @@ export default function MainVideo(props) {
 
   const handleClose = () => {
     props.onClose();
+  };
+
+
+  const handleButtonClick = () => {
+    props.onUpdateUserInfo();
+  };
+
+  const handleFormOpen = () => {
+    props.handelFormOpen();
   };
        
   return (
@@ -60,13 +71,40 @@ export default function MainVideo(props) {
           <DialogContentText id='alert-dialog-description' sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <YouTube videoId={props.videoId} opts={props.fullScreen ? smallScreen : normal} />        
           </DialogContentText>
-          { props.videoId === "2C4ybI41_v8" &&
           <div style={{ textAlign: 'center' }}>
-          <Link href="https://tinyurl.com/atrzb8n8" underline="always" target="_blank" sx={{ fontSize: '1.2rem', display: 'inline-block', mt:2 }}>
-                {'שלחו לי הודעה כאן'}
-          </Link>
-          </div>
+          { props.videoId === "2C4ybI41_v8" ?
+            <Fab
+            variant='extended'
+            size='medium'
+            color='primary'
+            component={Link}
+            href="https://lp.vp4.me/o8rz"
+            underline="always"
+            target="_blank"
+            sx={{
+              boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.8)',
+              width: props.fullScreen ? '100%' : '50%',
+              mt: 3,
+              fontSize: '1.2rem',
+              display: 'inline-block',
+            }}
+            onClick={handleButtonClick}
+          >
+            אני רוצה לשמוע עוד פרטים
+          </Fab>
+          
+          : <Fab 
+          variant='extended'
+          size='medium'
+          color='primary'
+          onClick={handleFormOpen}
+          sx={{ boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.8)', width: props.fullScreen ? '100%' : '50%', mt: 3 }}>
+        
+          המשך לשאלון  
+          <ContentPasteOutlinedIcon sx={{ mr: 4 }} />
+        </Fab>
           }
+          </div>
         </DialogContent>
       </Dialog>
     </Container>

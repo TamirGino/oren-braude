@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Fab, useMediaQuery } from '@mui/material';
+import { Box, Button, Fab, useMediaQuery } from '@mui/material';
 import ContentPasteOutlinedIcon from '@mui/icons-material/ContentPasteOutlined';
 import OndemandVideoOutlinedIcon from '@mui/icons-material/OndemandVideoOutlined';
 import Form from './components/Form/Form';
@@ -30,36 +30,23 @@ function App() {
   };
   const handleVideoClose = () => {
     setVideoOpen(false);
-  };
+  }; // <img src={require('/images/image-name.png')} />
 
   return (
     <>
       <Form fullScreen={fullScreen} open={formOpen} onClose={handleFormClose} handleUserExist={handleUserExist} exist={isUserExist}></Form>
-      <MainVideo videoId={'z027uv2AeM8'} title={'גמישות מטבולית - מה זה אומר ??'} fullScreen={fullScreen} open={videoOpen} onClose={handleVideoClose}></MainVideo>
-      <div className="fab-container">
-        <Fab
-          variant='extended'
-          onClick={handelFormOpen}
-          sx={{
-            border: '3px solid aqua',
-            backgroundColor: '#cfffe9',
-            width:'100%',
-            boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.8)',
-            '&:hover': {
-              backgroundColor: '#85E4B9',
-            },
-          }}
-        >
-          ענה על השאלון
-          <ContentPasteOutlinedIcon sx={{ mr: 4 }} />
-        </Fab>
-        <Fab
+      <MainVideo videoId={'z027uv2AeM8'} title={'40 שניות על גמישות מטבולית והשאלון'} fullScreen={fullScreen} open={videoOpen} onClose={handleVideoClose} handelFormOpen={handelFormOpen}></MainVideo>
+      <Box container="true" display='flex' flexDirection='column' sx={{ alignItems: 'center' }}>
+      <img src={require("C:/Users/tgino/Desktop/Project/project-oren/src/UI/logo.png")} alt="Logo" className="logo" />
+      <Fab
+        
           variant='extended'
           onClick={handelVideoOpen}
           sx={{
-            mt: 4,
+            mt: 6,
             border: '3px solid aqua',
             backgroundColor: '#cfffe9',
+            maxWidth:'300px',
             width:'100%',
             boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.8)',
             '&:hover': {
@@ -70,7 +57,32 @@ function App() {
           צפה בסרטון הסבר
           <OndemandVideoOutlinedIcon sx={{ mr: 2 }} />
         </Fab>
-        </div>
+
+        
+        <Button onClick={handelVideoOpen}>
+          <img src={require("C:/Users/tgino/Desktop/Project/project-oren/src/UI/play2.png")} alt="Logo" className="play" />
+        </Button>
+        
+        <Fab 
+          variant='extended'
+          onClick={handelFormOpen}
+          sx={{
+            mt: 6,
+            border: '3px solid aqua',
+            backgroundColor: '#cfffe9',
+            maxWidth:'300px',
+            width:'100%',
+            boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.8)',
+            '&:hover': {
+              backgroundColor: '#85E4B9',
+            },
+          }}
+        >
+          ענה על השאלון
+          <ContentPasteOutlinedIcon sx={{ mr: 4 }} />
+        </Fab>
+        
+        </Box>
     </>
   );
 }

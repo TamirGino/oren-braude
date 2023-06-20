@@ -57,7 +57,7 @@ export default function Question(props) {
         {props.question}
       </Typography>
       
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: '15px' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         
             <Typography sx={{color : '#2979ff', fontStyle: 'italic', flex: 1}}  align="center" variant="body2">
               {props.descFive}
