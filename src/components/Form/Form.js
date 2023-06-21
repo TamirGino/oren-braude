@@ -38,7 +38,7 @@ export default function Form(props) {
   //   return accumulator + currentValue.value;
   // }, 0);
 
-  const [activeStep, setActiveStep] = React.useState(1);
+  const [activeStep, setActiveStep] = React.useState(0);
   const [openSnack, setOpenSnack] = React.useState(false);
   const [tempArray, setTempArray] = React.useState([{ value: 0 }]);
   const [scoreCount, setScoreCount] = React.useState(initialValue);

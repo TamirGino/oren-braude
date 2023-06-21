@@ -5,6 +5,7 @@ import { db } from '../../config/firebase';
 import { collection, doc, updateDoc, getDocs, query, where } from 'firebase/firestore';
 import TipsAndUpdatesOutlinedIcon from '@mui/icons-material/TipsAndUpdatesOutlined';
 import MainVideo from '../Videos/MainVideo';
+import CustomTextField from '../TextField/CustomTextField';
 
 export default function Output(props) {
 
@@ -19,6 +20,14 @@ export default function Output(props) {
     { text: '😐', fontSize: '23' }, 
     { text: '🙂', fontSize: '23' },
     { text: '😁', fontSize: '23' },
+  ];
+
+  const scoreRanges = [
+    { min: 0, max: 20, label: 'גרועה', color: '#FF471A' },
+    { min: 21, max: 40, label: 'טעונת שיפור', color: '#F6961E' },
+    { min: 41, max: 60, label: 'לא רעה', color: '#ECDB23' },
+    { min: 61, max: 80, label: 'טובה', color: '#AEE228'  },
+    { min: 81, max: 100, label: 'מדהימה', color: '#6AD72D' }
   ];
 
   React.useEffect(() => {
@@ -122,12 +131,19 @@ export default function Output(props) {
     }
   };
 
+  const getScoreData = (score) => {
+    const matchedRange = scoreRanges.find((range) => score >= range.min && score <= range.max);
+    return matchedRange ? { label: matchedRange.label, color: matchedRange.color } : {};
+  };
+
   const handelVideoOpen = () => {
     setVideoOpen(true);
   };
   const handleVideoClose = () => {
     setVideoOpen(false);
   };
+
+  const scoreData = getScoreData(calcScore());
 
   return (
     <Box container="true" display='flex' flexDirection='column' sx={{ alignItems: 'center' }}>
@@ -143,17 +159,28 @@ export default function Output(props) {
         customSegmentLabels={labels}
         currentValueText={' '}
       />
-      <Typography sx={{ fontSize: 23, fontFamily: 'Roboto', color: '#022641', mt: -2 }} variant='h6'>
-        מידת הגמישות המטבולית שלך היא: <strong>{calcScore()}</strong>
-      </Typography>
-      <Grow in={Delay} timeout={2000}>
-        <Fab onClick={handelVideoOpen} size='medium' variant='extended' color='primary' sx={{ boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.8)', width: props.fullScreen ? '100%' : '50%', mt: 3 }}>
-          <Typography variant='body1' sx={{ display: 'inline-block' }}>
-            המשך לטיפים
+
+          <Typography component="span" variant='h3' display="block"  textAlign="center" style={{ color: scoreData.color, flex: 1 }}>
+            <strong>{calcScore()}</strong>
           </Typography>
-          <TipsAndUpdatesOutlinedIcon sx={{ mr: 2 }} />
-        </Fab>
+          <Typography component="span" variant='h5' display="block"  sx={{flex: 1}} align='center'>
+          מידת הגמישות המטבולית שלך 
+          </Typography>
+          <Typography component="span" variant='h5' display="block"  style={{ color: scoreData.color, flex: 1 }}>
+            <strong>{scoreData.label}</strong>
+          </Typography>
+      <Grow in={Delay} timeout={2000}>
+        <div style={{display:'flex', flexDirection:'column', alignItems: 'center'}}>
+          <Fab onClick={handelVideoOpen} size='medium' variant='extended' color='primary' sx={{ boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.8)', width: props.fullScreen ? '100%' : '100%', mt: 3 }}>
+            <Typography variant='body1' sx={{ display: 'inline-block' }}>
+              המשך לטיפים
+            </Typography>
+            <TipsAndUpdatesOutlinedIcon sx={{ mr: 2 }} />
+          </Fab>
+          <CustomTextField></CustomTextField>
+        </div>
       </Grow>
+     
       <MainVideo videoId={'2C4ybI41_v8'} title={comment} fullScreen={props.fullScreen} open={videoOpen} onClose={handleVideoClose} onUpdateUserInfo={updateUserInfo}></MainVideo>
     </Box>
   );
