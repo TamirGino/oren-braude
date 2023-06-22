@@ -1,5 +1,8 @@
 import * as React from 'react';
 import { Box, Fab, Grow, Typography } from '@mui/material';
+import Snackbar from "@mui/material/Snackbar";
+import Alert from '@mui/material/Alert';
+import CheckIcon from '@mui/icons-material/Check';
 import ReactSpeedometer from 'react-d3-speedometer';
 import { db } from '../../config/firebase';
 import { collection, doc, updateDoc, getDocs, query, where } from 'firebase/firestore';
@@ -7,12 +10,14 @@ import TipsAndUpdatesOutlinedIcon from '@mui/icons-material/TipsAndUpdatesOutlin
 import MainVideo from '../Videos/MainVideo';
 import CustomTextField from '../TextField/CustomTextField';
 
+
 export default function Output(props) {
 
   const [Delay, setDelay] = React.useState(false);
   const [videoOpen, setVideoOpen] = React.useState(false);
   const [comment, setComment] = React.useState('');
-  // const [userInfoUpdated, setUserInfoUpdated] = useState(false);
+  const [openSnack, setOpenSnack] = React.useState(false);
+
 
   const labels = [
     { text: '😭', fontSize: '23' },
@@ -79,9 +84,6 @@ export default function Output(props) {
       if (!querySnapshot.empty) {
         const docRef = querySnapshot.docs[0].ref;
         await updateDoc(docRef, { more_info: true });
-        //await updateDoc(doc(usersRef, userDoc.id), { more_info: true });
-        //await docRef.update({ more_info: true });
-        // setUserInfoUpdated(true);
         console.log('User information updated successfully!');
       } else {
         console.log('User not found!');
@@ -89,6 +91,28 @@ export default function Output(props) {
     } catch (error) {
       console.error('Error updating user information:', error);
     }
+  };
+
+  const updateUserQuestion = async (user_question) => {
+    try {
+    const usersRef = collection(db, 'users');
+    const q = query(usersRef, where('email', '==', props.userEmail));
+    const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        const docRef = querySnapshot.docs[0].ref;
+        await updateDoc(docRef, { question: user_question });
+        setOpenSnack(true);
+        console.log('User information updated successfully!');
+      } else {
+        console.log('User not found!');
+      }
+    } catch (error) {
+      console.error('Error updating user information:', error);
+    }
+  };
+
+  const handleCloseAlert = () => {
+    setOpenSnack(false);
   };
 
   const flattenArray = (arr) => {
@@ -148,6 +172,7 @@ export default function Output(props) {
   return (
     <Box container="true" display='flex' flexDirection='column' sx={{ alignItems: 'center' }}>
       <ReactSpeedometer
+        height= {props.fullScreen ? 200 : 280} 
         width={props.fullScreen ? 350 : 500}
         needleHeightRatio={props.fullScreen ? 0.5 : 0.7}
         maxValue={5}
@@ -159,7 +184,6 @@ export default function Output(props) {
         customSegmentLabels={labels}
         currentValueText={' '}
       />
-
           <Typography component="span" variant='h3' display="block"  textAlign="center" style={{ color: scoreData.color, flex: 1 }}>
             <strong>{calcScore()}</strong>
           </Typography>
@@ -177,10 +201,15 @@ export default function Output(props) {
             </Typography>
             <TipsAndUpdatesOutlinedIcon sx={{ mr: 2 }} />
           </Fab>
-          <CustomTextField></CustomTextField>
+          <CustomTextField onSendQuestion={updateUserQuestion}></CustomTextField>
         </div>
       </Grow>
-     
+      <Snackbar open={openSnack} autoHideDuration={3000} onClose={handleCloseAlert} >
+          <Alert icon={<CheckIcon fontSize="inherit" />} severity="success" variant="filled"
+              sx={{ width: '100%', justifyContent: 'center' }} >
+                &nbsp; השאלות נשלחו, אענה בהקדם (=
+          </Alert>
+      </Snackbar>
       <MainVideo videoId={'2C4ybI41_v8'} title={comment} fullScreen={props.fullScreen} open={videoOpen} onClose={handleVideoClose} onUpdateUserInfo={updateUserInfo}></MainVideo>
     </Box>
   );
