@@ -28,11 +28,11 @@ export default function Output(props) {
   ];
 
   const scoreRanges = [
-    { min: 0, max: 20, label: 'גרועה', color: '#FF471A' },
-    { min: 21, max: 40, label: 'טעונת שיפור', color: '#F6961E' },
-    { min: 41, max: 60, label: 'לא רעה', color: '#ECDB23' },
-    { min: 61, max: 80, label: 'טובה', color: '#AEE228'  },
-    { min: 81, max: 100, label: 'מדהימה', color: '#6AD72D' }
+    { min: 0, max: 20, label: 'נמוכה מאוד', color: '#FF471A' },
+    { min: 21, max: 40, label: 'נמוכה יחסית', color: '#F6961E' },
+    { min: 41, max: 60, label: 'בינונית', color: '#ECDB23' },
+    { min: 61, max: 80, label: 'בינונית - גבוהה', color: '#AEE228'  },
+    { min: 81, max: 100, label: 'גבוהה מאוד', color: '#6AD72D' }
   ];
 
   React.useEffect(() => {
@@ -43,12 +43,34 @@ export default function Output(props) {
       return () => clearTimeout(timer);
     }, 3500);
 
-    if (calcScore() <= 30) {
-      setComment('הגמישות המטבולית שלך נמוכה, צפה בסרטון על מנת לרדת במשקל ולהגיע לרמות אנרגיה גבוהות');
-    } else if (calcScore() <= 70) {
-      setComment('הגמישות המטבולית שלך בינונית, צפה בסרטון על מנת לרדת במשקל ולהגיע לרמות אנרגיה גבוהות');
-    } else {
-      setComment('הגמישות המטבולית שלך טובה! צפה בסרטון על מנת לקחת אותה לשלב הבא');
+    // if (calcScore() <= 30) {
+    //   setComment('הגמישות המטבולית שלך נמוכה, צפה בסרטון על מנת לרדת במשקל ולהגיע לרמות אנרגיה גבוהות');
+    // } else if (calcScore() <= 70) {
+    //   setComment('הגמישות המטבולית שלך בינונית, צפה בסרטון על מנת לרדת במשקל ולהגיע לרמות אנרגיה גבוהות');
+    // } else {
+    //   setComment('הגמישות המטבולית שלך טובה! צפה בסרטון על מנת לקחת אותה לשלב הבא');
+    // }
+    const score = calcScore();
+
+    switch (true) {
+      case score <= 20:
+        setComment('הגמישות המטבולית שלך נמוכה מאוד, צפה בסרטון על מנת לרדת במשקל ולהגיע לרמות אנרגיה גבוהות');
+        break;
+      case score <= 40:
+        setComment('הגמישות המטבולית שלך נמוכה יחסית, צפה בסרטון על מנת לרדת במשקל ולהגיע לרמות אנרגיה גבוהות');
+        break;
+      case score <= 60:
+        setComment('הגמישות המטבולית שלך בינונית, צפה בסרטון על מנת לרדת במשקל ולהגיע לרמות אנרגיה גבוהות');
+        break;
+      case score <= 80:
+        setComment('הגמישות המטבולית שלך בינונית - גבוהה, צפה בסרטון על מנת לקחת אותה לשלב הבא');
+        break;
+      case score <= 100:
+        setComment('הגמישות המטבולית שלך גבוהה מאוד, צפה בסרטון על מנת לקחת אותה לשלב הבא');
+        break;
+      default:
+        setComment('');
+        break;
     }
   }, []);
 
@@ -172,9 +194,9 @@ export default function Output(props) {
   return (
     <Box container="true" display='flex' flexDirection='column' sx={{ alignItems: 'center' }}>
       <ReactSpeedometer
-        height= {props.fullScreen ? 200 : 280} 
-        width={props.fullScreen ? 350 : 500}
-        needleHeightRatio={props.fullScreen ? 0.5 : 0.7}
+        height= {props.fullScreen ? 200 : 230} 
+        width={props.fullScreen ? 350 : 400}
+        needleHeightRatio={props.fullScreen ? 0.5 : 0.6}
         maxValue={5}
         value={calcScore() / 20} // devided by 20 because the range of the Speedometer is 1-5
         ringWidth={47}
@@ -210,6 +232,7 @@ export default function Output(props) {
                 &nbsp; השאלות נשלחו, אענה בהקדם (=
           </Alert>
       </Snackbar>
+
       <MainVideo videoId={'2C4ybI41_v8'} title={comment} fullScreen={props.fullScreen} open={videoOpen} onClose={handleVideoClose} onUpdateUserInfo={updateUserInfo}></MainVideo>
     </Box>
   );

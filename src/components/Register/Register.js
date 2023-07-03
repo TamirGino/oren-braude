@@ -62,10 +62,22 @@ export default function Register(props) {
           }
         });
         const newUserId = maxId + 1;
+        // insert submition date and time 
+        const currentDate = new Date();
+        const day = String(currentDate.getDate()).padStart(2, '0');
+        const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+        const year = currentDate.getFullYear();
+        const formattedDate = `${day}-${month}-${year}`;
+
+        const hours = String(currentDate.getHours()).padStart(2, '0');
+        const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+        const formattedTime = `${hours}:${minutes}`; 
 
         // Add the new user to Firestore
         const newDocRef = doc(usersRef, String(newUserId));
-        await setDoc(newDocRef, { id: newUserId, email: values.email, first_name: values.name, last_name: values.Lname, open: true, score: -1, more_info: false } );
+        await setDoc(newDocRef, { id: newUserId, email: values.email, first_name: values.name,
+           last_name: values.Lname, open: true, score: -1, more_info: false,
+           submission_date: formattedDate, submission_time: formattedTime, } );
         
         // const newUser = doc(collection(db, 'users'));
         // await setDoc(newUser, { id: newUser.id, email: values.email, first_name: values.name, last_name: values.Lname, open: true, score: -1 });

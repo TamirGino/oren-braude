@@ -29,11 +29,13 @@ const CustomTextField = (props) => {
   const classes = useStyles();
 
   const [textFieldValue, setTextFieldValue] = React.useState('');
+  const [buttonDisabled, setButtonDisabled] = React.useState(false);
 
   const handleFabClick = () => {
     console.log(textFieldValue);
     if (textFieldValue !== '') {
         props.onSendQuestion(textFieldValue);
+        setButtonDisabled(true);
       }
   };
 
@@ -49,15 +51,17 @@ const CustomTextField = (props) => {
       id="outlined-multiline-static"
       onChange={handleTextFieldChange}
       value={textFieldValue}
-      label="מוזמנים לשאול אותי שאלות ואחזור אליכם" 
+      label={buttonDisabled ? 'השאלות נשלחו בהצלחה' : 'מוזמנים לשאול אותי שאלות ואחזור אליכם'}
       multiline
       rows={4}
       variant="outlined"
       className={classes.customTextField}
       sx={{marginTop: '5px'}}
+      disabled={buttonDisabled}
     />
 
     <Fab
+        disabled={buttonDisabled}
         onClick={handleFabClick}
         color="primary"
         size="small"

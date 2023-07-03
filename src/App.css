@@ -1,38 +1,53 @@
-/* .container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  width: 100%;
-  max-width: 300px;
-  margin-top: 30px;
-}
-
-.logo {
-  background-image: url("C:/Users/tgino/Desktop/Project/project-oren/src/UI/logo.png");
-  background-repeat: no-repeat;
-  height: 250px;
-  width: 420px;  */
-  /* Adjust the width of the logo as needed */
-  /* height: auto; */
-   /* margin-top: 50px;  */
-
-
-
-  
-  .logo {
-    width: 370px; 
-    height: 200px;
-    /* margin-top: 50px; */
+ .logo {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
   }
+
+  @media (max-height: 750px) {
+    .logo {
+      display: none;
+    }
+  }
+
+
+  .logo_left {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+  }
+
+  @media (max-width: 960px) {
+    .logo_left {
+      display: none;
+    }
+  }
+
+  .logo_right {
+    position: fixed;
+    top: 50%;
+    right: 20;
+    transform: translateY(-50%);
+  }
+
+  @media (max-width: 960px) {
+    .logo_right {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
 
   .play {
     cursor: pointer;
     width: 300px; 
     height: 200px;
-    /* background-color: #c7f0fb; */
-    /* margin-top: 50px; */
+    z-index: 1;
   }
   
 
