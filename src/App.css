@@ -1,57 +1,103 @@
- .logo {
-    position: fixed;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1;
+.logo {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.play {
+  cursor: pointer;
+  width: 300px; 
+  height: 200px;
+  z-index: 1;
+}
+
+@media (max-height: 700px) {
+  .logo {
+    display: none;
   }
 
-  @media (max-height: 750px) {
-    .logo {
-      display: none;
-    }
-  }
+}
 
 
+.logo_left {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+}
+
+@media (max-width: 960px) {
   .logo_left {
-    position: fixed;
-    top: 50%;
-    left: 0;
-    transform: translateY(-50%);
+    display: none;
   }
+}
 
-  @media (max-width: 960px) {
-    .logo_left {
-      display: none;
-    }
-  }
+.logo_right {
+  position: fixed;
+  top: 50%;
+  right: 20;
+  transform: translateY(-50%);
+}
 
+@media (max-width: 960px) {
   .logo_right {
     position: fixed;
     top: 50%;
-    right: 20;
-    transform: translateY(-50%);
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 
-  @media (max-width: 960px) {
-    .logo_right {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
+  .logo_mobile {
+    position: fixed;
+    width: 350px;
+    height: 250px;
+    top: 85%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+  }
+}
+
+@media (max-width: 960px) and (max-height: 900px) {
+  .logo_right {
+    top: 40%;
   }
 
-
-  .play {
-    cursor: pointer;
-    width: 300px; 
-    height: 200px;
-    z-index: 1;
+  .logo_mobile {
+    top: 85%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
-  
+  .logo{
+    /* display: none; */
+    top:0%;
+    height: 140px;
+  }
+}
+
+@media (max-width: 960px) and (max-height: 700px) {
+  .logo_right {
+    top: 30%;
+  }
+}
+
+@media (min-width: 960px) {
+  .logo_mobile {
+    display: none;
+  }
+} 
+
+@media (orientation: landscape) {
+  .logo_right {
+    top: 45%;
+  }
+
+  .logo_mobile {
+    display: none;
+  }
+}
 
 
-    
-  
-  
+

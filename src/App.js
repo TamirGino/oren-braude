@@ -38,7 +38,7 @@ function App() {
       <MainVideo videoId={'z027uv2AeM8'} title={'40 שניות על גמישות מטבולית והשאלון'} fullScreen={fullScreen} open={videoOpen} onClose={handleVideoClose} handelFormOpen={handelFormOpen}></MainVideo>
       <img src={require("C:/Users/tgino/Desktop/Project/project-oren/src/UI/logo.png")} alt="Logo" className="logo" />
       <Box container="true" display='flex' flexDirection='column' sx={{ alignItems: 'left', position:'fixed' }}>
-      <img src={require("C:/Users/tgino/Desktop/Project/project-oren/src/UI/oren_desktop2.jpg")} alt="Logo" className="logo_left" />
+      <img src={require("C:/Users/tgino/Desktop/Project/project-oren/src/UI/oren_desktop.jpg")} alt="Logo" className="logo_left" />
       </Box>
       <Box container="true" display='flex' flexDirection='column' className="logo_right" 
             sx={{ alignItems: fullScreen ? 'center' : 'right' }}>
@@ -63,12 +63,7 @@ function App() {
           <OndemandVideoOutlinedIcon sx={{ mr: 2 }} />
         </Fab>
 
-        
-        {/* <Button onClick={handelVideoOpen} >
-          <img src={require("C:/Users/tgino/Desktop/Project/project-oren/src/UI/play1.png")} alt="Logo" className="play" />
-        </Button> */}
-
-        <img onClick={handelVideoOpen} src={require("C:/Users/tgino/Desktop/Project/project-oren/src/UI/play1.png")} alt="Logo" className="play" />
+        <img onClick={handelVideoOpen} src={require("C:/Users/tgino/Desktop/Project/project-oren/src/UI/play.png")} alt="Logo" className="play" />
 
         <Fab 
           variant='extended'
@@ -90,6 +85,7 @@ function App() {
         </Fab>
           
         </Box>
+        <img src={require("C:/Users/tgino/Desktop/Project/project-oren/src/UI/oren_mobile.jpeg")} alt="Logo" className="logo_mobile" />
     </>
   );
 }
