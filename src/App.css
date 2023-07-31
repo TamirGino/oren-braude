@@ -17,13 +17,19 @@
   .logo {
     display: none;
   }
+}
 
+@media (max-height: 900px){
+  .logo{
+    top:0%;
+    height: 140px;
+  }
 }
 
 
 .logo_left {
   position: fixed;
-  top: 50%;
+  top: 48%;
   left: 0;
   transform: translateY(-50%);
 }
@@ -71,7 +77,6 @@
     transform: translate(-50%, -50%);
   }
   .logo{
-    /* display: none; */
     top:0%;
     height: 140px;
   }
@@ -82,6 +87,8 @@
     top: 30%;
   }
 }
+
+
 
 @media (min-width: 960px) {
   .logo_mobile {
@@ -96,6 +103,24 @@
 
   .logo_mobile {
     display: none;
+  }
+}
+
+
+@media (max-width: 960px) and (max-height: 560px) {
+  .logo_mobile {
+    height: 200px;
+  }
+
+}
+
+@media (max-width: 960px) and (max-height: 520px) {
+  .logo_mobile {
+    display: none;
+  }
+
+  .logo_right {
+    top: 45%; 
   }
 }
 
