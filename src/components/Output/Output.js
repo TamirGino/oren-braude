@@ -87,11 +87,21 @@ export default function Output(props) {
       const userDoc = querySnapshot.docs[0];
       const userData = userDoc.data();
       const currentScore = userData.score;
-      if (currentScore !== -1) {
-        // console.log(`Score for user ${email} is not -1. Not updating score.`);
-        return;
+      if (currentScore !== -1 && userData.open) {  
+        if (userData.new_score !== -1) {
+          await updateDoc(doc(usersRef, userDoc.id), { score: userData.new_score });
+          await updateDoc(doc(usersRef, userDoc.id), { new_score: score });
+        } else{
+          await updateDoc(doc(usersRef, userDoc.id), { new_score: score });
+        } 
+        await updateDoc(doc(usersRef, userDoc.id), { open: false });
+      } else {
+          if (currentScore === -1){
+            await updateDoc(doc(usersRef, userDoc.id), { score });
+          } 
       }
-      await updateDoc(doc(usersRef, userDoc.id), { score });
+        // console.log(`Score for user ${email} is not -1. Not updating score.`);
+
       // console.log(`Score updated for user ${email}`);
     } catch (error) {
       // console.error('Error updating user score:', error);
@@ -166,16 +176,19 @@ export default function Output(props) {
     return average;
   }
 
-  const calcScore = () => {
-    if (props.exist[0]) {
-        console.log(props.sum)
-        return props.sum;
-    } else { // not exist
-        console.log(calculateAverageValue(props.valuesArray) * 20)
-        //return Math.round((props.sum / (props.numOfQuestions * 5)) * 100);
-        return Math.round(calculateAverageValue(props.valuesArray) * 20)
-    }
-  };
+
+const calcScore = () => {
+  if (props.exist[0]) {
+      console.log(props.sum)
+      return props.sum;
+  } else { // not exist
+      console.log(calculateAverageValue(props.valuesArray) * 20)
+      //return Math.round((props.sum / (props.numOfQuestions * 5)) * 100);
+      return Math.round(calculateAverageValue(props.valuesArray) * 20)
+  }
+};
+
+
 
   const getScoreData = (score) => {
     const matchedRange = scoreRanges.find((range) => score >= range.min && score <= range.max);

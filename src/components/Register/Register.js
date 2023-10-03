@@ -17,13 +17,33 @@ const signupSchema = object({
 });
 
 export const checkEmailExists = async (email) => {
+  const secondAttempt = await checkEmailOpen(email);
+  // console.log("SECOND ATTEMP=", secondAttempt);
+  if(secondAttempt){ //"open" field is true - the user can make a second attemp
+    return 1000
+  }
   const q = query(collection(db, 'users'), where('email', '==', email));
   const doc = await getDocs(q);
   if (doc.size > 0) {
-    return doc.docs[0].data().score;
+    if (doc.docs[0].data().new_score !== -1){
+      return doc.docs[0].data().new_score;
+    } else {
+      return doc.docs[0].data().score;
+    }
   } else {
     return -1;
   }
+};
+
+export const checkEmailOpen = async (email) => {
+  const q = query(collection(db, 'users'), where('email', '==', email));
+  const doc = await getDocs(q);
+  if (doc.size > 0) {
+    return doc.docs[0].data().open;
+  } 
+  // else {
+  //   return -1;
+  // }
 };
 
 export default function Register(props) {
@@ -76,7 +96,7 @@ export default function Register(props) {
         // Add the new user to Firestore
         const newDocRef = doc(usersRef, String(newUserId));
         await setDoc(newDocRef, { id: newUserId, email: values.email, first_name: values.name,
-           last_name: values.Lname, open: true, score: -1, more_info: false,
+           last_name: values.Lname, open: false, score: -1, new_score:-1, more_info: false,
            submission_date: formattedDate, submission_time: formattedTime, } );
         
         // const newUser = doc(collection(db, 'users'));
@@ -89,10 +109,10 @@ export default function Register(props) {
     props.handleEmail(values.email);
   };
 
-  const callSetTimeout = (emailExists) => {
+  const callSetTimeout = (scoreEmailExists) => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-      props.handleForm(emailExists);
+      props.handleForm(scoreEmailExists);
     }, 2000);
     return () => clearTimeout(timer);
   };

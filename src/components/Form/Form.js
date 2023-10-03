@@ -112,15 +112,22 @@ export default function Form(props) {
   const handleForm = (score) => {
     if (score === -1) {
       // user doesn't exists
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+          setActiveStep((prevActiveStep) => prevActiveStep + 1);
     } else {
-      // user exists
-      const newArray = [...tempArray];
-      newArray[0].value = score;
-      setTempArray(newArray);
-      setScoreCount(tempArray);
-      props.handleUserExist(tempArray);
-      setActiveStep(steps.length);
+      if (score === 1000) { 
+        //"open" field is true -> the user can make a second attemp
+          setActiveStep((prevActiveStep) => prevActiveStep + 1);
+          
+      } else {
+        // user exists -> user goes directly to the output
+          const newArray = [...tempArray];
+          newArray[0].value = score;
+          setTempArray(newArray);
+          setScoreCount(tempArray);
+          props.handleUserExist(tempArray);
+          setActiveStep(steps.length);
+      }
+      
     }
   };
 
