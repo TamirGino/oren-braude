@@ -36,13 +36,13 @@ export default function Output(props) {
   ];
 
   React.useEffect(() => {
-    console.log(props.valuesArray)
+    // console.log(props.valuesArray)
     updateUserScore(props.userEmail, calcScore());
     const timer = setTimeout(() => {
       setDelay(true);
       return () => clearTimeout(timer);
     }, 3500);
-
+  
     // if (calcScore() <= 30) {
     //   setComment('הגמישות המטבולית שלך נמוכה, צפה בסרטון על מנת לרדת במשקל ולהגיע לרמות אנרגיה גבוהות');
     // } else if (calcScore() <= 70) {
@@ -179,7 +179,7 @@ export default function Output(props) {
 
 const calcScore = () => {
   if (props.exist[0]) {
-      console.log(props.sum)
+      // console.log(props.sum)
       return props.sum;
   } else { // not exist
       console.log(calculateAverageValue(props.valuesArray) * 20)

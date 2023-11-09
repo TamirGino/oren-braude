@@ -5,6 +5,11 @@ import OndemandVideoOutlinedIcon from '@mui/icons-material/OndemandVideoOutlined
 import Form from './components/Form/Form';
 import MainVideo from './components/Videos/MainVideo';
 import './App.css';
+import logo from '../src/UI/logo.png'
+import oren_desktop from '../src/UI/oren_desktop.jpg'
+import oren_mobile from '../src/UI/oren_mobile.jpeg'
+import play from '../src/UI/play.png'
+
 
 
 function App() {
@@ -36,9 +41,9 @@ function App() {
     <>
       <Form fullScreen={fullScreen} open={formOpen} onClose={handleFormClose} handleUserExist={handleUserExist} exist={isUserExist}></Form>
       <MainVideo videoId={'z027uv2AeM8'} title={'40 שניות על גמישות מטבולית והשאלון'} fullScreen={fullScreen} open={videoOpen} onClose={handleVideoClose} handelFormOpen={handelFormOpen}></MainVideo>
-      <img src={require("C:/Users/tgino/Desktop/Project/project-oren/src/UI/logo.png")} alt="Logo" className="logo" />
+      <img src={logo} alt="Logo" className="logo" />
       <Box container="true" display='flex' flexDirection='column' sx={{ alignItems: 'left', position:'fixed' }}>
-      <img src={require("C:/Users/tgino/Desktop/Project/project-oren/src/UI/oren_desktop.jpg")} alt="Logo" className="logo_left" />
+      <img src={oren_desktop} alt="Logo" className="logo_left" />
       </Box>
       <Box container="true" display='flex' flexDirection='column' className="logo_right" 
             sx={{ alignItems: fullScreen ? 'center' : 'right' }}>
@@ -63,7 +68,7 @@ function App() {
           <OndemandVideoOutlinedIcon sx={{ mr: 2 }} />
         </Fab>
 
-        <img onClick={handelVideoOpen} src={require("C:/Users/tgino/Desktop/Project/project-oren/src/UI/play.png")} alt="Logo" className="play" />
+        <img onClick={handelVideoOpen} src={play} alt="Logo" className="play" />
 
         <Fab 
           variant='extended'
@@ -85,7 +90,8 @@ function App() {
         </Fab>
           
         </Box>
-        <img src={require("C:/Users/tgino/Desktop/Project/project-oren/src/UI/oren_mobile.jpeg")} alt="Logo" className="logo_mobile" />
+        <img src={oren_mobile} alt="Logo" className="logo_mobile" />
+        
     </>
   );
 }

@@ -18,7 +18,7 @@ const signupSchema = object({
 
 export const checkEmailExists = async (email) => {
   const secondAttempt = await checkEmailOpen(email);
-  // console.log("SECOND ATTEMP=", secondAttempt);
+
   if(secondAttempt){ //"open" field is true - the user can make a second attemp
     return 1000
   }
@@ -68,6 +68,7 @@ export default function Register(props) {
     setIsLoading(true);
     const emailExists = await checkEmailExists(values.email);
     if (emailExists === -1) {
+      console.log(emailExists);
       //Email doesn't exist in database!;
       try {
 
