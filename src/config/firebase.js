@@ -2,7 +2,7 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyB0RyEBKjCea78qk77smzfEl7Y3UeG7g5A',
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: 'project-oren-377a1.firebaseapp.com',
   projectId: 'project-oren-377a1',
   storageBucket: 'project-oren-377a1.appspot.com',

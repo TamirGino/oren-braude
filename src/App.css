@@ -1,9 +1,21 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-image: url('./UI/background.jpeg');
+  background-size: contain;
+  background-position:inherit ;
+  background-repeat: no-repeat;
+  height: 100vh;
+  color: white; 
+}
+
 .logo {
   position: fixed;
   top: 0;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1;
+  height: 240px;
 }
 
 .play {
@@ -22,7 +34,7 @@
 @media (max-height: 900px){
   .logo{
     top:0%;
-    height: 140px;
+    height: 200px;
   }
 }
 
@@ -34,9 +46,10 @@
   transform: translateY(-50%);
 }
 
-@media (max-width: 960px) {
-  .logo_left {
-    display: none;
+@media (max-width: 1200px) {
+  body{
+    background-image:none;
+    background-color: #c7f0fb;
   }
 }
 
@@ -48,6 +61,7 @@
 }
 
 @media (min-width: 960px) {
+  
   .logo_right {
     right: 10%;
     }
