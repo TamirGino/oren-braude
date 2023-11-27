@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import YouTube from 'react-youtube';
 import { Button, Container, Dialog, DialogContent, DialogContentText, DialogTitle, Fab, IconButton, Link } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
@@ -13,6 +13,7 @@ export default function MainVideo(props) {
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const videoRef = useRef(null);
 
   const normal = {
     height: '500',
@@ -36,14 +37,21 @@ export default function MainVideo(props) {
 
 
   const handleButtonClick = () => {
+    if (videoRef.current) {
+      videoRef.current.pauseVideo();
+    }
     props.onUpdateUserInfo();
   };
 
   const handleFormOpen = () => {
+    if (videoRef.current) {
+      videoRef.current.pauseVideo();
+    }
     props.handelFormOpen();
   };
        
   return (
+    <React.Fragment>
     <Container maxWidth={isSmallScreen ? '100%' : 'md'}>
       <Dialog open={props.open} fullScreen={props.fullScreen} onClose={handleClose} aria-labelledby='alert-dialog-title' aria-describedby='alert-dialog-description'>
         <DialogTitle sx={{ textAlign: 'center', fontStyle: 'italic', fontSize: '20px', fontFamily: 'Roboto' }} id='alert-dialog-title'>
@@ -69,7 +77,11 @@ export default function MainVideo(props) {
         </DialogTitle>
         <DialogContent >
           <DialogContentText id='alert-dialog-description' sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <YouTube videoId={props.videoId} opts={props.fullScreen ? smallScreen : normal} />        
+            <YouTube videoId={props.videoId} opts={props.fullScreen ? smallScreen : normal} 
+              onReady={(event) => {
+              // Set the videoRef when the video is ready
+              videoRef.current = event.target;
+            }}/>        
           </DialogContentText>
           <div style={{ textAlign: 'center' }}>
           { props.videoId === "2C4ybI41_v8" ?
@@ -108,5 +120,6 @@ export default function MainVideo(props) {
         </DialogContent>
       </Dialog>
     </Container>
+    </React.Fragment>
   );
 }

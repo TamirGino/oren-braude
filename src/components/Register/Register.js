@@ -24,13 +24,16 @@ export const checkEmailExists = async (email) => {
   }
   const q = query(collection(db, 'users'), where('email', '==', email));
   const doc = await getDocs(q);
+  //console.log(doc.docs[0].data().scores.first.score)
   if (doc.size > 0) {
-    if (doc.docs[0].data().new_score !== -1){
-      return doc.docs[0].data().new_score;
+    if (doc.docs[0].data().scores.third.score !== -1){
+      return doc.docs[0].data().scores.third.score;
+    } else if (doc.docs[0].data().scores.second.score !== -1){
+      return doc.docs[0].data().scores.second.score;
     } else {
-      return doc.docs[0].data().score;
+      return doc.docs[0].data().scores.first.score;
     }
-  } else {
+  } else { // email does not exist
     return -1;
   }
 };
@@ -84,21 +87,24 @@ export default function Register(props) {
         });
         const newUserId = maxId + 1;
         // insert submition date and time 
-        const currentDate = new Date();
-        const day = String(currentDate.getDate()).padStart(2, '0');
-        const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-        const year = currentDate.getFullYear();
-        const formattedDate = `${day}-${month}-${year}`;
+        // const currentDate = new Date();
+        // const day = String(currentDate.getDate()).padStart(2, '0');
+        // const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+        // const year = currentDate.getFullYear();
+        // const formattedDate = `${day}-${month}-${year}`;
 
-        const hours = String(currentDate.getHours()).padStart(2, '0');
-        const minutes = String(currentDate.getMinutes()).padStart(2, '0');
-        const formattedTime = `${hours}:${minutes}`; 
+        // const hours = String(currentDate.getHours()).padStart(2, '0');
+        // const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+        // const formattedTime = `${hours}:${minutes}`; 
 
         // Add the new user to Firestore
         const newDocRef = doc(usersRef, String(newUserId));
         await setDoc(newDocRef, { id: newUserId, email: values.email, first_name: values.name,
-           last_name: values.Lname, open: false, score: -1, new_score:-1, more_info: false,
-           submission_date: formattedDate, submission_time: formattedTime, } );
+           last_name: values.Lname, open: true,  more_info: false,
+            scores: {first: { date : "", score: -1 },
+                    second: { date : "", score: -1 },
+                    third: { date : "", score: -1 }},   
+          });
         
         // const newUser = doc(collection(db, 'users'));
         // await setDoc(newUser, { id: newUser.id, email: values.email, first_name: values.name, last_name: values.Lname, open: true, score: -1 });

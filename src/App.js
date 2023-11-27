@@ -42,13 +42,6 @@ function App() {
       <Form fullScreen={fullScreen} open={formOpen} onClose={handleFormClose} handleUserExist={handleUserExist} exist={isUserExist}></Form>
       <MainVideo videoId={'z027uv2AeM8'} title={'40 שניות על גמישות מטבולית והשאלון'} fullScreen={fullScreen} open={videoOpen} onClose={handleVideoClose} handelFormOpen={handelFormOpen}></MainVideo>
 
-      {/* <Box >
-        <img src={logo} alt="Logo" className="logo" />
-      </Box> */}
-
-      {/* <Box container="true" display='flex' flexDirection='column' sx={{ alignItems: 'left', position:'fixed' }}>
-        <img src={oren_desktop} alt="Logo" className="logo_left" />
-      </Box> */}
 
       <Box container="true" display='flex' flexDirection='column' className="logo_right" 
             sx={{ alignItems: fullScreen ? 'center' : 'right' }}>
@@ -99,9 +92,7 @@ function App() {
           <ContentPasteOutlinedIcon sx={{ mr: 4 }} />
         </Fab>
        </Box>
-
-        {/* <img src={oren_mobile} alt="Logo" className="logo_mobile" /> */}
-              
+        <img src={oren_mobile} alt="Logo" className="logo_mobile" />
     </>
   );
 }

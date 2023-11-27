@@ -1,16 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-import { DataGrid, GridToolbar  } from '@mui/x-data-grid';
+import { DataGrid, GridToolbar, gridPageCountSelector, gridPageSelector,useGridApiContext,useGridSelector, } from '@mui/x-data-grid';
+import DialogMsg from './DialogMsg'
 
 import { db } from '../../config/firebase';
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, deleteDoc, doc, updateDoc  } from "firebase/firestore";
+import { IconButton } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import NoteAddOutlinedIcon from '@mui/icons-material/NoteAddOutlined';
+
+import Pagination from '@mui/material/Pagination';
+import PaginationItem from '@mui/material/PaginationItem';
+
+
+const formatDate = (timestamp) => {
+   // Check if timestamp is of type Timestamp
+   if (!(timestamp && typeof timestamp === 'object' && timestamp.hasOwnProperty('seconds'))) {
+    return "לא צוין";
+}
+// Convert timestamp to milliseconds
+const milliseconds = timestamp.seconds * 1000 + timestamp.nanoseconds / 1e6;
+// Create a Date object
+const dateObject = new Date(milliseconds);
+// Format the date as "dd/mm/yy"
+const formattedDate = `${(dateObject.getDate() < 10 ? '0' : '') + dateObject.getDate()}/${(dateObject.getMonth() + 1 < 10 ? '0' : '') + (dateObject.getMonth() + 1)}/${dateObject.getFullYear().toString().slice(-2)}`;
+return formattedDate;
+}
 
 const columns = [
   {
     field: 'first_name',
     headerName: 'Full Name',
-    // description: 'This column has a value getter and is not sortable.',
-    // sortable: false,
     width: 150,
     headerAlign:"left",
     valueGetter: (params) =>
@@ -25,49 +45,131 @@ const columns = [
     headerAlign:"left",
   },
   {
-    field: 'score',
-    headerName: 'Score',
-    type: '',
-    width: 110,
-    editable: true,
-    headerAlign:"left",
-  },
-  {
-    field: 'new_score',
-    headerName: 'New Score',
+    field: 'first',
+    headerName: 'First Score',
     type: '',
     width: 150,
     editable: true,
     headerAlign:"left",
     valueGetter: (params) =>
-      `${params.row.new_score !== -1 ? params.row.new_score : "טרם בוצע" }`,
+      params.row.scores.first.score,
   },
   {
-    field: 'submission_date',
-    headerName: 'When',
+    field: 'first_date',
+    headerName: 'Date #1',
     description: 'This column has a value getter and is not sortable.',
     sortable: false,
     width: 150,
     headerAlign:"left",
-    valueGetter: (params) =>
-      `${params.row.submission_date ? params.row.submission_date + " " + params.row.submission_time : "לא צוין" }`,
+    valueGetter: (params) => formatDate(params.row.scores.first.date),
   },
-  {
-    field: 'more_info',
-    headerName: 'More Info',
+  { 
+    field: 'second',
+    headerName: 'Second Score',
     type: '',
     width: 150,
     editable: true,
     headerAlign:"left",
     valueGetter: (params) =>
-      `${params.row.more_info ? "כן" : "לא" }`,
+    params.row.scores.second.score !== -1 ? params.row.scores.second.score : "טרם בוצע" ,
+  },
+  {
+    field: 'second_date',
+    headerName: 'Date #2',
+    description: 'This column has a value getter and is not sortable.',
+    sortable: false,
+    width: 150,
+    headerAlign:"left",
+    valueGetter: (params) => formatDate(params.row.scores.second.date),
+  },
+  { 
+    field: 'third',
+    headerName: 'Third Score',
+    type: '',
+    width: 150,
+    editable: true,
+    headerAlign:"left",
+    valueGetter: (params) =>
+    params.row.scores.third.score !== -1 ? params.row.scores.third.score : "טרם בוצע" ,
+  },
+  {
+    field: 'third_date',
+    headerName: 'Date #3',
+    description: 'This column has a value getter and is not sortable.',
+    sortable: false,
+    width: 150,
+    headerAlign:"left",
+    valueGetter: (params) => formatDate(params.row.scores.third.date),
+  },
+  {
+    field: 'open',
+    headerName: 'Open',
+    type: '',
+    width: 150,
+    editable: true,
+    headerAlign:"left",
+    valueGetter: (params) =>
+      params.row.open ? "כן" : "לא" ,
   },
 ];
 
 
 export default function UsersTable() {
 
+  const CustomPagination = () => {
+  const apiRef = useGridApiContext();
+  const page = useGridSelector(apiRef, gridPageSelector);
+  const pageCount = useGridSelector(apiRef, gridPageCountSelector);
+
+  return (
+    <Box sx={{display:'flex', justifyContent:'center', 
+      alignContent:'center', justifyItems:'center', width:'100%'}}>
+      <Pagination
+      sx={{
+        direction:'ltr'
+      }}
+      color="primary"
+      variant="outlined"
+      shape="rounded"
+      page={page + 1}
+      count={pageCount}
+      renderItem={(props2) => <PaginationItem {...props2} disableRipple />}
+      onChange={(event, value) => apiRef.current.setPage(value - 1)}
+    />
+    </Box>
+    
+  );
+}
+
+  const CustomToolbar = () => {
+    return (
+      <React.Fragment>
+        <Box display='flex' justifyContent='space-between' alignItems='center' >
+          <GridToolbar/>
+          <Box>
+                <IconButton aria-label="delete" size="large" color="primary"
+                  sx={{justifySelf:'end'}}
+                  onClick={() => handleDialogOpen("repeat")}>
+                  <NoteAddOutlinedIcon fontSize="inherit" />
+                </IconButton>
+
+                <IconButton aria-label="delete" size="large" color="primary"
+                  sx={{justifySelf:'end'}}
+                  onClick={() => handleDialogOpen("remove")}>
+                  <DeleteIcon fontSize="inherit" />
+                </IconButton>
+           
+          </Box>
+        </Box>
+      </React.Fragment>
+      
+    );
+  };
+
   const [rows, setRows] = useState([]);
+  const [selectedRowsIds, setSelectedRowsIds] = React.useState([]);
+  const [dialogOpen, setDialogOpen] = React.useState(false);
+  const [dialogMessage, setDialogMessage] = React.useState("");
 
 
   useEffect(() => {
@@ -76,7 +178,6 @@ export default function UsersTable() {
         const querySnapshot = await getDocs(collection(db, "users"));
         const usersData = [];
         querySnapshot.forEach((doc) => {
-        console.log(doc.id, " => ", doc.data());
         usersData.push(doc.data());
     })
     setRows(usersData);
@@ -85,29 +186,81 @@ export default function UsersTable() {
     }
     }
     getAllUsers();
-      }, []);
+      }, [selectedRowsIds]);
+
+      const handleDialogOpen = async (action) =>{
+        if(selectedRowsIds.length === 0){
+          setDialogMessage("לא נבחרו משתמשים")
+        } else if (action === "remove"){
+          setDialogMessage("אתה עומד למחוק את המשתמשים הנבחרים. האם אתה בטוח?")
+        } else if (action === "repeat") {
+          setDialogMessage("אתה עומד לפתוח את השאלון למשתמשים הנבחרים. האם אתה בטוח?")
+        }
+        setDialogOpen(true)
+      }
+
+      const handleRemoveBtn = async (approval) =>{
+        setDialogOpen(false)
+        if (approval === 'agree') {
+        try {
+          await Promise.all(
+            selectedRowsIds.map(async (id) => {
+              const docRef = doc(db, "users",String(id));
+              await deleteDoc(docRef);
+            })
+          );
+
+          setSelectedRowsIds([]);
+        } catch (error) {
+          console.error('Error deleting documents:', error);
+        }
+        }
+      }
+
+      const handleAddTryBtn = async (approval) =>{
+        setDialogOpen(false);
+        if (approval === 'agree') {
+        try {
+          await Promise.all(
+            selectedRowsIds.map(async (id) => {
+              const docRef = doc(db, "users",String(id));
+              await updateDoc(docRef, {
+                open: true
+              });
+            })
+          );
+
+          setSelectedRowsIds([]);
+        } catch (error) {
+          console.error('Error updating documents:', error);
+        }
+        }
+      }
+
+      const handleSelectionModelChange = (selectionModel) => {
+        if (selectionModel.length > 0) {
+          const selectedRowIds = selectionModel;
+          setSelectedRowsIds(selectedRowIds);
+        } else {
+          setSelectedRowsIds([]);
+        }
+      };
 
   return (
-    <Box sx={{ height: 700, width: '100%', background:'white', borderRadius:5, }}>
+    <Box sx={{ height: '100vh', width: '100%', background:'white', borderRadius:5, }}>
+      
       <DataGrid
-        sx={{
-          ".css-wop1k0-MuiDataGrid-footerContainer":{
-            display:'flex',
-            justifyContent:'center',
-            alignItems:'center',
-            direction:'ltr'
-          }, ".css-128fb87-MuiDataGrid-toolbarContainer":{
-            alignSelf:'center',
-            gap:'20px'
-          }
-        }}
         rows={rows}
         columns={columns}
         autoPageSize
         checkboxSelection
         disableRowSelectionOnClick
-        slots={{ toolbar: GridToolbar }}
+        onRowSelectionModelChange={handleSelectionModelChange}
+        slots={{ toolbar: CustomToolbar, pagination: CustomPagination,  }}
       />
+      {dialogOpen && 
+        <DialogMsg msg={dialogMessage} open={true} handleRemoveBtn={handleRemoveBtn} handleAddTryBtn={handleAddTryBtn}/>
+      }
     </Box>
   );
 }

@@ -5,7 +5,7 @@ import Alert from '@mui/material/Alert';
 import CheckIcon from '@mui/icons-material/Check';
 import ReactSpeedometer from 'react-d3-speedometer';
 import { db } from '../../config/firebase';
-import { collection, doc, updateDoc, getDocs, query, where } from 'firebase/firestore';
+import { collection, doc, updateDoc, getDocs, query, where, serverTimestamp } from 'firebase/firestore';
 import TipsAndUpdatesOutlinedIcon from '@mui/icons-material/TipsAndUpdatesOutlined';
 import MainVideo from '../Videos/MainVideo';
 import CustomTextField from '../TextField/CustomTextField';
@@ -84,27 +84,34 @@ export default function Output(props) {
         // console.error('No matching documents');
         return;
       }
+      const scoreToUpdate = score;
       const userDoc = querySnapshot.docs[0];
       const userData = userDoc.data();
-      const currentScore = userData.score;
-      if (currentScore !== -1 && userData.open) {  
-        if (userData.new_score !== -1) {
-          await updateDoc(doc(usersRef, userDoc.id), { score: userData.new_score });
-          await updateDoc(doc(usersRef, userDoc.id), { new_score: score });
+      const currentScore = userData.scores;
+      if(userData.open){
+        if (currentScore.first.score === -1 ) {
+          await updateDoc(doc(usersRef, userDoc.id),
+           { 'scores.first.score': scoreToUpdate, 'scores.first.date': serverTimestamp(), } );
+        } else if (currentScore.second.score === -1 ) {
+          await updateDoc(doc(usersRef, userDoc.id),
+           { 'scores.second.score': scoreToUpdate, 'scores.second.date': serverTimestamp(), });
+        } else if (currentScore.third.score === -1 ) {
+          await updateDoc(doc(usersRef, userDoc.id),
+           { 'scores.third.score': scoreToUpdate, 'scores.third.date': serverTimestamp(), });
         } else{
-          await updateDoc(doc(usersRef, userDoc.id), { new_score: score });
-        } 
-        await updateDoc(doc(usersRef, userDoc.id), { open: false });
-      } else {
-          if (currentScore === -1){
-            await updateDoc(doc(usersRef, userDoc.id), { score });
-          } 
-      }
-        // console.log(`Score for user ${email} is not -1. Not updating score.`);
+          await updateDoc(doc(usersRef, userDoc.id),
+           { 'scores.first.score': currentScore.second.score, 'scores.first.date': currentScore.second.date,  });
+          await updateDoc(doc(usersRef, userDoc.id),
+           { 'scores.second.score': currentScore.third.score, 'scores.second.date': currentScore.third.date, });
+          await updateDoc(doc(usersRef, userDoc.id),
+           { 'scores.third.score': scoreToUpdate, 'scores.third.date': serverTimestamp(), });
+        }
+        await updateDoc(doc(usersRef, userDoc.id), { open: false } );
 
-      // console.log(`Score updated for user ${email}`);
+      }
+     
     } catch (error) {
-      // console.error('Error updating user score:', error);
+       console.error('Error updating user score:', error);
     }
   };
 
@@ -182,13 +189,10 @@ const calcScore = () => {
       // console.log(props.sum)
       return props.sum;
   } else { // not exist
-      console.log(calculateAverageValue(props.valuesArray) * 20)
-      //return Math.round((props.sum / (props.numOfQuestions * 5)) * 100);
+      //console.log(calculateAverageValue(props.valuesArray) * 20)
       return Math.round(calculateAverageValue(props.valuesArray) * 20)
   }
 };
-
-
 
   const getScoreData = (score) => {
     const matchedRange = scoreRanges.find((range) => score >= range.min && score <= range.max);
