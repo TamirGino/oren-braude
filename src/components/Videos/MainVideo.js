@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import YouTube from 'react-youtube';
-import { Button, Container, Dialog, DialogContent, DialogContentText, DialogTitle, Fab, IconButton, Link } from '@mui/material';
+import { Button, Container, Dialog, DialogContent, DialogContentText, DialogTitle, Fab, IconButton, Link, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import CloseIcon from '@mui/icons-material/Close';
@@ -90,7 +90,7 @@ export default function MainVideo(props) {
             size='medium'
             color='primary'
             component={Link}
-            href="https://lp.vp4.me/o8rz"
+            href="https://lp.smoove.io/oh6i"
             underline="always"
             target="_blank"
             sx={{
@@ -102,7 +102,10 @@ export default function MainVideo(props) {
             }}
             onClick={handleButtonClick}
           >
-            אני רוצה לשמוע עוד פרטים
+            <Typography variant='body1' sx={{ display: 'inline-block' }}>
+              אני רוצה לרדת במשקל, מבלי לסבול!
+            </Typography>
+            
           </Fab>
           
           : <Fab 
