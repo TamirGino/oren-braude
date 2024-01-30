@@ -8,8 +8,7 @@ import './App.css';
 import logo from '../src/UI/new_logo.png'
 import oren_desktop from '../src/UI/oren_desktop.jpg'
 import oren_mobile from '../src/UI/oren_mobile.jpeg'
-import play from '../src/UI/play.png'
-
+import play from '../src/UI/play.jpeg'
 
 
 function App() {
