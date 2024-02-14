@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid, GridToolbar, gridPageCountSelector, gridPageSelector,useGridApiContext,useGridSelector, } from '@mui/x-data-grid';
 import DialogMsg from './DialogMsg'
+import DialogChart from './DialogChart';
 
 import { db } from '../../config/firebase';
-import { collection, getDocs, deleteDoc, doc, updateDoc  } from "firebase/firestore";
+import { collection, getDocs, deleteDoc, doc, updateDoc, getDoc, orderBy, query  } from "firebase/firestore";
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import NoteAddOutlinedIcon from '@mui/icons-material/NoteAddOutlined';
+import InsightsIcon from '@mui/icons-material/Insights';
 
 import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
@@ -149,6 +151,13 @@ export default function UsersTable() {
           <Box>
                 <IconButton aria-label="delete" size="large" color="primary"
                   sx={{justifySelf:'end'}}
+                  onClick={() => handleDialogOpen("chart")}
+                  >
+                  <InsightsIcon fontSize="inherit" />
+                </IconButton>
+
+                <IconButton aria-label="delete" size="large" color="primary"
+                  sx={{justifySelf:'end'}}
                   onClick={() => handleDialogOpen("repeat")}>
                   <NoteAddOutlinedIcon fontSize="inherit" />
                 </IconButton>
@@ -168,14 +177,19 @@ export default function UsersTable() {
 
   const [rows, setRows] = useState([]);
   const [selectedRowsIds, setSelectedRowsIds] = React.useState([]);
-  const [dialogOpen, setDialogOpen] = React.useState(false);
+  const [dialogMsgOpen, setDialogMsgOpen] = React.useState(false);
   const [dialogMessage, setDialogMessage] = React.useState("");
+  const [dialogChartOpen, setDialogChartOpen] = React.useState(false);
+  const [userData, setUserData] = useState({});
 
 
   useEffect(() => {
     const getAllUsers = async () => {
     try{
-        const querySnapshot = await getDocs(collection(db, "users"));
+        // const querySnapshot = await getDocs(collection(db, "users"));
+        const querySnapshot = await getDocs(
+          query(collection(db, "users"), orderBy('id'))
+      );
         const usersData = [];
         querySnapshot.forEach((doc) => {
         usersData.push(doc.data());
@@ -190,17 +204,26 @@ export default function UsersTable() {
 
       const handleDialogOpen = async (action) =>{
         if(selectedRowsIds.length === 0){
-          setDialogMessage("לא נבחרו משתמשים")
+          setDialogMessage("לא נבחרו משתמשים");
         } else if (action === "remove"){
-          setDialogMessage("אתה עומד למחוק את המשתמשים הנבחרים. האם אתה בטוח?")
+          setDialogMessage("אתה עומד למחוק את המשתמשים הנבחרים. האם אתה בטוח?");
         } else if (action === "repeat") {
-          setDialogMessage("אתה עומד לפתוח את השאלון למשתמשים הנבחרים. האם אתה בטוח?")
+          setDialogMessage("אתה עומד לפתוח את השאלון למשתמשים הנבחרים. האם אתה בטוח?");
+        } else if (action === "chart") {
+          // console.log(selectedRowsIds);
+          if(selectedRowsIds.length > 1){
+            setDialogMessage("יש לבחור משתמש אחד בלבד");
+          } else {
+            getUserData(selectedRowsIds[0]);
+            setDialogChartOpen(true);
+            return;
+          }
         }
-        setDialogOpen(true)
+        setDialogMsgOpen(true);
       }
 
       const handleRemoveBtn = async (approval) =>{
-        setDialogOpen(false)
+        setDialogMsgOpen(false)
         if (approval === 'agree') {
         try {
           await Promise.all(
@@ -218,7 +241,7 @@ export default function UsersTable() {
       }
 
       const handleAddTryBtn = async (approval) =>{
-        setDialogOpen(false);
+        setDialogMsgOpen(false);
         if (approval === 'agree') {
         try {
           await Promise.all(
@@ -236,6 +259,24 @@ export default function UsersTable() {
         }
         }
       }
+
+      const getUserData = async (userId) => {
+        try {
+          const docRef = doc(db, "users", String(userId));
+          const docSnap = await getDoc(docRef);
+          
+          if (docSnap.exists()) {
+            console.log(docSnap.data());
+            setUserData(docSnap.data());
+          } else {
+            console.log("No such document exists!");
+            // return null;
+          }
+        } catch (error) {
+          console.error("Error getting user document:", error);
+          throw error;
+        }
+      };
 
       const handleSelectionModelChange = (selectionModel) => {
         if (selectionModel.length > 0) {
@@ -258,8 +299,11 @@ export default function UsersTable() {
         onRowSelectionModelChange={handleSelectionModelChange}
         slots={{ toolbar: CustomToolbar, pagination: CustomPagination,  }}
       />
-      {dialogOpen && 
+      {dialogMsgOpen && 
         <DialogMsg msg={dialogMessage} open={true} handleRemoveBtn={handleRemoveBtn} handleAddTryBtn={handleAddTryBtn}/>
+      }
+      {dialogChartOpen &&
+         <DialogChart open={true} setDialogChartOpen={setDialogChartOpen} userData={userData}/>
       }
     </Box>
   );
