@@ -43,7 +43,7 @@ const columns = [
     headerName: 'Email',
     type: 'string',
     width: 200,
-    editable: true,
+    editable: false,
     headerAlign:"left",
   },
   {
@@ -51,7 +51,7 @@ const columns = [
     headerName: 'First Score',
     type: '',
     width: 150,
-    editable: true,
+    editable: false,
     headerAlign:"left",
     valueGetter: (params) =>
       params.row.scores.first.score,
@@ -70,7 +70,7 @@ const columns = [
     headerName: 'Second Score',
     type: '',
     width: 150,
-    editable: true,
+    editable: false,
     headerAlign:"left",
     valueGetter: (params) =>
     params.row.scores.second.score !== -1 ? params.row.scores.second.score : "טרם בוצע" ,
@@ -89,7 +89,7 @@ const columns = [
     headerName: 'Third Score',
     type: '',
     width: 150,
-    editable: true,
+    editable: false,
     headerAlign:"left",
     valueGetter: (params) =>
     params.row.scores.third.score !== -1 ? params.row.scores.third.score : "טרם בוצע" ,
@@ -107,11 +107,21 @@ const columns = [
     field: 'open',
     headerName: 'Open',
     type: '',
-    width: 150,
-    editable: true,
+    width: 80,
+    editable: false,
     headerAlign:"left",
     valueGetter: (params) =>
       params.row.open ? "כן" : "לא" ,
+  },
+  {
+    field: 'question',
+    headerName: 'Question',
+    type: '',
+    width: 100,
+    editable: false,
+    headerAlign:"left",
+    valueGetter: (params) =>
+      params.row.question ? params.row.question : "X" ,
   },
 ];
 
