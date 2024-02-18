@@ -2,9 +2,13 @@ import React, { useEffect, useState } from 'react';
 import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import annotationPlugin from 'chartjs-plugin-annotation';
-import lowLevel from '../Admin/Imgs/chartImgLow.png'
-import mediumLevel from '../Admin/Imgs/chartImgLow.png'
-import highLevel from '../Admin/Imgs/chartImgLow.png'
+import level_one from '../Admin/Imgs/chartImgVL.png';
+import level_two from '../Admin/Imgs/‏‏chartImgL.png'
+import level_three from '../Admin/Imgs/‏‏chartImgM.png'
+import level_four from '../Admin/Imgs/‏‏chartImgH.png'
+import level_five from '../Admin/Imgs/‏‏chartImgVH.png'
+import fonts from '../Admin/fonts.module.css'
+
 
 
 const GradientChart = ({ xData, data }) => {
@@ -26,11 +30,41 @@ const GradientChart = ({ xData, data }) => {
 
       Chart.register(ChartDataLabels, annotationPlugin);
 
-       const getImage=(scoreLevel) => {
-        const img = new Image();
-        img.src = scoreLevel;
-        return img;
+      const getYvalue = (score) => {
+        if (score >= 0 && score <= 40) {
+            return (score + 20);
+        } else if (score >= 41 && score <= 80) {
+            return (score + 10);
+        } else if (score >= 81 && score <= 90) {
+            return (score);
+        } else if (score >= 91 && score <= 100) {
+            return (score - 20);
+        } 
       }
+
+      const getImage = (score) => {
+        let imageName;
+    
+        if (score >= 0 && score <= 20) {
+            imageName = level_one;
+        } else if (score >= 21 && score <= 40) {
+            imageName = level_two;
+        } else if (score >= 41 && score <= 60) {
+            imageName = level_three;
+        } else if (score >= 61 && score <= 80) {
+            imageName = level_four;
+        } else if (score >= 81 && score <= 100) {
+            imageName = level_five;
+        } else {
+            // Handle scores outside the specified range, if needed
+            console.error('Score out of range');
+            return null;
+        }
+    
+        const img = new Image();
+        img.src = imageName;
+        return img;
+    };
 
       
     //   const annotation1 = {
@@ -61,23 +95,23 @@ const GradientChart = ({ xData, data }) => {
       const annotation1 = {
         type: 'label',
         drawTime: 'afterDraw',
-        content: getImage(lowLevel),
+        content: getImage(data[0]),
         xValue: 0.2,
-        yValue: data[0] + 20,
+        yValue: getYvalue(data[0]),
         width: 130,
         height: 130,
         callout: {
             display: true,
-            // position: 'left'
+            // position: 'left' 0-40 +20  ----- 41-80 +10 ------ 81-100 +0
         }
       };
 
       const annotation2 = {
         type: 'label',
         drawTime: 'afterDraw',
-        content: getImage(mediumLevel),
+        content: getImage(data[1]),
         xValue: 1,
-        yValue: data[1] + 10,
+        yValue: getYvalue(data[1]),
         width: 130,
         height: 130,
         callout: {
@@ -89,9 +123,9 @@ const GradientChart = ({ xData, data }) => {
       const annotation3 = {
         type: 'label',
         drawTime: 'afterDraw',
-        content: getImage(highLevel),
-        xValue: 1.7,
-        yValue: data[2],
+        content: getImage(data[2]),
+        xValue: 1.8,
+        yValue: getYvalue(data[2]),
         width: 130,
         height: 130,
         
@@ -172,24 +206,28 @@ const GradientChart = ({ xData, data }) => {
                       },
                      
                      datalabels: {
+                        //  anchor: 'center',
                         // backgroundColor: '#2196f3',
-                        // anchor: 'start',
-                        // borderRadius: 10,
-                        align: 'right',
-                        offset: 10,
-                        opacity:0.5,
+                        // borderRadius: 20,
                         // borderColor:'black',
+                        // crossAlign:'start',
+                        // borderRadius: 20,
+                        // borderColor:'pink',
+                        
                         color: 'black',
-                        // crossAlign:'center',
-                        borderRadius: 10,
-                        borderColor:'black',
-                        padding: 10,
+                        align: 'right',
+                        offset: 60,
+                        opacity:0.8,
+                        padding: 0,
                         font: {
                           weight: 'bold',
                           size:'20px',
+                          style:'italic',
+                          family:'Cookie',
                         },
                       },
 
+                    
 
                     }
             }
