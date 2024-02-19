@@ -35,8 +35,10 @@ const GradientChart = ({ xData, data }) => {
             return (score + 20);
         } else if (score >= 41 && score <= 80) {
             return (score + 10);
-        } else if (score >= 81 && score <= 90) {
-            return (score);
+        } else if (score >= 81 && score <= 85) {
+            return (score + 5);
+        } else if (score >= 86 && score <= 90) {
+                return (score);
         } else if (score >= 91 && score <= 100) {
             return (score - 20);
         } 
@@ -170,7 +172,7 @@ const GradientChart = ({ xData, data }) => {
                             labelOffset:10,
                             maxRotation: 20,
                             minRotation: 20,
-                            // padding:10,
+                            padding:10,
                             // align:'start',
                             font: {
                                 weight: 'bold',
@@ -188,10 +190,10 @@ const GradientChart = ({ xData, data }) => {
 
                      title: {
                         display: true,
-                        text: 'מד גמישות מטבולית',
+                        text: 'מד גמישות מטבולית', // גרף שיפור גמישות מטבולית
+                        color: '#00897b',
                         font: {
                             weight: 'bold',
-                            color:'#000000',
                             style:'italic',
                             size:20,
                           },
@@ -206,26 +208,27 @@ const GradientChart = ({ xData, data }) => {
                       },
                      
                      datalabels: {
-                        //  anchor: 'center',
-                        // backgroundColor: '#2196f3',
-                        // borderRadius: 20,
-                        // borderColor:'black',
-                        // crossAlign:'start',
-                        // borderRadius: 20,
-                        // borderColor:'pink',
-                        
+                        anchor: 'center',
+                        backgroundColor: '#a7ffeb',
+                        borderRadius: 10 ,
+                        borderColor: 'black',
+                        borderWidth: 0, 
+                        borderSkipped: 'top',
+                        padding: 3,
+
+                        textAlign:'center',
                         color: 'black',
-                        align: 'right',
-                        offset: 60,
-                        opacity:0.8,
-                        padding: 0,
+                        align: 'bottom',
+                        offset: 20,
+                        opacity:1,
                         font: {
                           weight: 'bold',
-                          size:'20px',
+                          size:'25px',
                           style:'italic',
                           family:'Cookie',
                         },
                       },
+
 
                     
 

@@ -50,6 +50,10 @@ export default function DialogChart(props) {
     props.setDialogChartOpen(false);
   };
 
+  const combineStrings = (str1, str2) => {
+    return `${str1} ${str2}`;
+}
+
   return (
     <React.Fragment>
       <Dialog
@@ -60,8 +64,11 @@ export default function DialogChart(props) {
         open={props.open}
       >
         <DialogTitle sx={{ m: 0, p: 2, display:'flex', justifyContent:'center' }} id="customized-dialog-title">
-                <Typography component="div" variant="h6">{props.userData.first_name}</Typography>
-                <Typography component="div" variant="h6">{props.userData.last_name}</Typography>
+                {/* <Typography component="div" variant="h6">{props.userData.first_name}</Typography> */}
+                <Typography component="div" variant="h6">
+                  {combineStrings(props.userData.first_name, props.userData.last_name)}
+                </Typography>
+                {/* <Typography component="div" variant="h6">{props.userData.last_name}</Typography> */}
         </DialogTitle>
         <IconButton
           aria-label="close"
