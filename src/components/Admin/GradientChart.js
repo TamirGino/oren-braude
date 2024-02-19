@@ -35,12 +35,12 @@ const GradientChart = ({ xData, data }) => {
             return (score + 20);
         } else if (score >= 41 && score <= 80) {
             return (score + 10);
-        } else if (score >= 81 && score <= 85) {
+        } else if (score >= 81 && score <= 100) {
             return (score + 5);
-        } else if (score >= 86 && score <= 90) {
-                return (score);
-        } else if (score >= 91 && score <= 100) {
-            return (score - 20);
+        // } else if (score >= 86 && score <= 90) {
+        //         return (score);
+        // } else if (score >= 91 && score <= 100) {
+        //     return (score - 10);
         } 
       }
 
@@ -93,18 +93,17 @@ const GradientChart = ({ xData, data }) => {
     //     radius: 10
     //   };
 
-
+    
       const annotation1 = {
         type: 'label',
         drawTime: 'afterDraw',
         content: getImage(data[0]),
-        xValue: 0.2,
+        xValue: 0.1,
         yValue: getYvalue(data[0]),
         width: 130,
         height: 130,
         callout: {
             display: true,
-            // position: 'left' 0-40 +20  ----- 41-80 +10 ------ 81-100 +0
         }
       };
 
@@ -124,13 +123,13 @@ const GradientChart = ({ xData, data }) => {
 
       const annotation3 = {
         type: 'label',
-        drawTime: 'afterDraw',
+        // drawTime: 'afterDraw',
         content: getImage(data[2]),
-        xValue: 1.8,
+        xValue: 1.9,
+        // xAdjust: 4,
         yValue: getYvalue(data[2]),
         width: 130,
         height: 130,
-        
         callout: {
             display: true,
             position: 'left',
@@ -157,7 +156,7 @@ const GradientChart = ({ xData, data }) => {
                         suggestedMin: 0,
                         suggestedMax: 100,
                         ticks: {
-                            crossAlign: "center",
+                            crossAlign: "far",
                             // align:'start',
                             font: {
                                 weight: 'bold',
@@ -172,7 +171,7 @@ const GradientChart = ({ xData, data }) => {
                             labelOffset:10,
                             maxRotation: 20,
                             minRotation: 20,
-                            padding:10,
+                            padding:40,
                             // align:'start',
                             font: {
                                 weight: 'bold',
@@ -190,9 +189,11 @@ const GradientChart = ({ xData, data }) => {
 
                      title: {
                         display: true,
-                        text: 'מד גמישות מטבולית', // גרף שיפור גמישות מטבולית
-                        color: '#00897b',
+                        text:'גרף שיפור גמישות מטבולית',
+                        // text: 'מד גמישות מטבולית', // גרף שיפור גמישות מטבולית
+                        color: '#384465',
                         font: {
+                            family:'Cookie',
                             weight: 'bold',
                             style:'italic',
                             size:20,
@@ -200,6 +201,7 @@ const GradientChart = ({ xData, data }) => {
                     },
 
                      annotation: {
+                        clip: false,
                         annotations: {
                             annotation1,
                             annotation2,
@@ -209,21 +211,24 @@ const GradientChart = ({ xData, data }) => {
                      
                      datalabels: {
                         anchor: 'center',
-                        backgroundColor: '#a7ffeb',
+                        // backgroundColor: '#a7ffeb',
+
+                        backgroundColor: '#384465',
+
                         borderRadius: 10 ,
-                        borderColor: 'black',
-                        borderWidth: 0, 
+                        // borderColor: '#D25A30',
+                        borderWidth: 2, 
                         borderSkipped: 'top',
                         padding: 3,
 
                         textAlign:'center',
-                        color: 'black',
+                        color: 'white',
                         align: 'bottom',
                         offset: 20,
                         opacity:1,
                         font: {
                           weight: 'bold',
-                          size:'25px',
+                          size:'30px',
                           style:'italic',
                           family:'Cookie',
                         },
