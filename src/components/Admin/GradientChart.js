@@ -7,7 +7,6 @@ import level_two from '../Admin/Imgs/‏‏chartImgL.png'
 import level_three from '../Admin/Imgs/‏‏chartImgM.png'
 import level_four from '../Admin/Imgs/‏‏chartImgH.png'
 import level_five from '../Admin/Imgs/‏‏chartImgVH.png'
-import fonts from '../Admin/fonts.module.css'
 
 
 
@@ -31,16 +30,14 @@ const GradientChart = ({ xData, data }) => {
       Chart.register(ChartDataLabels, annotationPlugin);
 
       const getYvalue = (score) => {
-        if (score >= 0 && score <= 40) {
+        if (score >= 1 && score <= 40) {
             return (score + 20);
         } else if (score >= 41 && score <= 80) {
             return (score + 10);
         } else if (score >= 81 && score <= 100) {
             return (score + 5);
-        // } else if (score >= 86 && score <= 90) {
-        //         return (score);
-        // } else if (score >= 91 && score <= 100) {
-        //     return (score - 10);
+        } else {
+            return (score - 200);
         } 
       }
 
@@ -68,30 +65,7 @@ const GradientChart = ({ xData, data }) => {
         return img;
     };
 
-      
-    //   const annotation1 = {
-    //     type: 'box',
-    //     yMin: 0,
-    //     yMax: 20,
-    //     backgroundColor: 'rgba(221, 29, 33, 0.3)',
-    //     borderColor: 'rgba(0,0,0,0)',
-                    
-    //   };
-    //   const annotation2 = {
-    //     type: 'box',
-    //     yMin: 21,
-    //     yMax: 40,
-    //     backgroundColor: 'rgba(251, 206, 7, 0.3)',
-    //     borderColor: 'rgba(0,0,0,0)', 
-    //   };
-
-    //   const annotation3 = {
-    //     type: 'point',
-    //     drawTime: 'afterDraw',
-    //     xValue: 1,
-    //     yValue: 30,
-    //     radius: 10
-    //   };
+    
 
     
       const annotation1 = {
@@ -120,6 +94,7 @@ const GradientChart = ({ xData, data }) => {
             position: 'left'
         }
       };
+    
 
       const annotation3 = {
         type: 'label',
@@ -135,6 +110,7 @@ const GradientChart = ({ xData, data }) => {
             position: 'left',
         }
       };
+
 
         const chartInstance = new Chart(ctx, {
             type: 'line',

@@ -22,9 +22,9 @@ export default function DialogChart(props) {
 
     useEffect(() => {
         // Update score data
-        const firstScore = props.userData.scores?.first?.score || 0;
-        const secondScore = props.userData.scores?.second?.score || 0;
-        const thirdScore = props.userData.scores?.third?.score || 0;
+        const firstScore = props.userData.scores?.first?.score === -1 ? 0 : props.userData.scores?.first?.score || 0;
+    const secondScore = props.userData.scores?.second?.score === -1 ? 0 : props.userData.scores?.second?.score || 0;
+    const thirdScore = props.userData.scores?.third?.score === -1 ? 0 : props.userData.scores?.third?.score || 0;
 
         setData([firstScore, secondScore, thirdScore]);
         // setData([40, 48, 50, 42, 44, 55])
