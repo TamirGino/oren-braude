@@ -127,6 +127,11 @@ const GradientChart = ({ xData, data }) => {
             },
 
             options: {
+                layout: {
+                    padding: {
+                        right: 60
+                    }
+                },
                 scales: {
                     y: {
                         suggestedMin: 0,
@@ -147,7 +152,7 @@ const GradientChart = ({ xData, data }) => {
                             labelOffset:10,
                             maxRotation: 20,
                             minRotation: 20,
-                            padding:40,
+                            // padding:40,
                             // align:'start',
                             font: {
                                 weight: 'bold',
