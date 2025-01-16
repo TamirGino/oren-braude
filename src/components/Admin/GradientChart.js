@@ -169,6 +169,10 @@ const GradientChart = ({ xData, data }) => {
                      },
 
                      title: {
+                        padding: {
+                            top: 0, // Adjust this value to move the title closer to the top
+                            bottom: 40, // Optional: Adjust space between the title and the chart
+                        },
                         display: true,
                         text:'גרף שיפור גמישות מטבולית',
                         // text: 'מד גמישות מטבולית', // גרף שיפור גמישות מטבולית
@@ -179,6 +183,7 @@ const GradientChart = ({ xData, data }) => {
                             style:'italic',
                             size:20,
                           },
+                          
                     },
 
                      annotation: {
